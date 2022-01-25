@@ -1,0 +1,25 @@
+.earth-right-menu {
+    z-index: 500;
+    position: absolute;
+    background: rgba(43, 44, 47, .8);
+    border: 1px solid #2b2c2f;
+    min-width: 110px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-size: 14px;
+}
+
+.earth-right-menu li {
+    list-style: none;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 10px;
+}
+
+.earth-right-menu li:hover {
+    background-color: #444d59;
+}
