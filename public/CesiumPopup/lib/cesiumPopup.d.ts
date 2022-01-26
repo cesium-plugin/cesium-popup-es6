@@ -1,6 +1,10 @@
 import { Viewer, Cartesian3 } from "cesium";
 import "./index.css";
 export interface CesiumPopupOptions {
+    /**
+     * 显示弹窗相对于地面相机的最大高度
+     */
+    visibleMaxCameraHeight?: number;
     position?: Cartesian3;
     html?: string;
     className?: "earth-popup-imgbg-green" | "earth-popup-imgbg-blue" | "earth-popup-imgbg-blue-simple" | "earth-popup-common" | "earth-popup-bubble" | string;
@@ -28,6 +32,7 @@ export declare class CesiumPopup {
     private setValue?;
     private moving;
     private tooltip?;
+    private cameraMoveEnd?;
     constructor(viewer: Viewer, options: CesiumPopupOptions, action?: CesiumPopupAction);
     private init;
     private registerMouseAction;
@@ -46,6 +51,10 @@ export declare class CesiumPopup {
      * @param position
      */
     setPosition(position: Cartesian3): void;
+    /**
+     * 添加相机的监听
+     */
+    private addCameraLisener;
     /**
      * 地图添加监听，用于更新弹窗的位置
      */

@@ -10,7 +10,7 @@
 ## umd模式
 
 ```javascript
-<script type="text/javascript" src="./CesiumPopup/dist/CesiumPopup.umd.js"></script>
+<script type="text/javascript" src="./CesiumPopup/dist/cesium-popup-es6.umd.js"></script>
  const cartesian3 = Cesium.Cartesian3.fromDegrees(103.75703775549388, 36.08774979703967, 1509.2181406351685)
  const html = `<div class="title">初始化创建</div>
  <div class="content">初始化创建内容</div>`

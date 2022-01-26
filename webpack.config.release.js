@@ -5,7 +5,6 @@ const CopyDirWebpackPlugin = require('./webapck-plugin-copy');
 const config = require('./package.json');
 const Webpack = require('webpack');
 const rootPath = "./dist";
-const fs = require("fs-extra");
 
 const p = new CleanWebpackPlugin()
 p.removeFiles(["dist", "lib", "public/CesiumPopup"])
@@ -19,14 +18,13 @@ const plugins = [
         { from: path.resolve(__dirname, `./docs`), to: path.resolve('./public/CesiumPopup/docs') },
     ]),
 ]
-
+const entry = {}
+entry[`${config.name}.umd`] = "./src/source/index.ts"
 module.exports = {
     mode: "production",
     // mode: "development",
     // devtool:"eval",
-    entry: {
-        "CesiumPopup.umd": "./src/source/index.ts",
-    },
+    entry,
     output: {
         path: path.resolve(__dirname, rootPath),
         filename: `[name].js`,
