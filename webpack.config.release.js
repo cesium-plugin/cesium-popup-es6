@@ -5,6 +5,8 @@ const CopyDirWebpackPlugin = require('./webapck-plugin-copy');
 const config = require('./package.json');
 const Webpack = require('webpack');
 const rootPath = "./dist";
+const fs = require("fs-extra");
+
 const p = new CleanWebpackPlugin()
 p.removeFiles(["dist", "lib", "public/CesiumPopup"])
 const plugins = [
@@ -14,7 +16,12 @@ const plugins = [
     new CopyDirWebpackPlugin([
         { from: path.resolve(__dirname, `${rootPath}`), to: path.resolve('./public/CesiumPopup/dist') },
         { from: path.resolve(__dirname, `./lib`), to: path.resolve('./public/CesiumPopup/lib') },//拷贝至静态目录测试umd
-        { from: path.resolve(__dirname, `./docs`), to: path.resolve('./public/CesiumPopup/docs') },//拷贝至静态目录测试umd
+        { from: path.resolve(__dirname, `./docs`), to: path.resolve('./public/CesiumPopup/docs') },
+        {
+            from: path.resolve(__dirname, `./src/source`),
+            to: path.resolve('./dist'),
+            skipts: true,//跳过ts
+        },
     ]),
 ]
 

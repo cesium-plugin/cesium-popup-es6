@@ -1,7 +1,7 @@
 {
     "name": "cesium-popup",
     "main": "dist/CesiumPoup.umd.js",
-    "module": "dist/CesiumPoup.js",
+    "module": "dist/index.js",
     "typings": "lib/index.d.ts",
     "version": "0.1.0",
     "private": false,
@@ -25,14 +25,14 @@
     "bugs": {
         "url": "https://github.com/cesium-plugin/cesium-popup/issues"
     },
-    "homepage": "https://github.com/cesium-plugin/cesium-popup#readme",
     "scripts": {
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "a": "npm install --registry https://registry.npm.taobao.org",
-        "start": "node --max-old-space-size=6000 node_modules/cross-env/src/bin/cross-env.js PORT=5555 craco start",
+        "start": "node --max-old-space-size=6000 node_modules/cross-env/src/bin/cross-env.js PORT=5556 craco start",
         "build": "rimraf ./build && cross-env GENERATE_SOURCEMAP=false craco build",
-        "release": "npm run doc & webpack --config  ./webpack.config.release.js",
+        "ts2js": "tsc ./src/source/index.ts --target es2016",
+        "release": "npm run ts2js & npm run doc & webpack --config  ./webpack.config.release.js",
         "doc": "npx typedoc ./src/source/index.ts"
     },
     "eslintConfig": {

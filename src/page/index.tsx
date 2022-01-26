@@ -3,15 +3,9 @@ import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Ca
 import { useEffect } from 'react';
 import { CesiumPopupMouseActionUtil } from '../source/common/cesiumPopupMouseActionUtil';
 import { CesiumPopupAction, CesiumPopup } from "../source/"
-let state
 let viewer: Viewer
-const popupObj: { [key: string]: CesiumPopup } = {};
 
 const PPopup = (props: any) => {
-
-    function onMove(_state) {
-        state = _state
-    }
     const action: CesiumPopupAction = {
         remove: (popup) => {
             console.log(popup, "被移除了");
@@ -27,7 +21,7 @@ const PPopup = (props: any) => {
     }
 
     useEffect(() => {
-        const viewer: Viewer = new Viewer('map', {
+        viewer = new Viewer('map', {
             imageryProvider: new ArcGisMapServerImageryProvider({ url: "https://elevation3d.arcgis.com/arcgis/rest/services/World_Imagery/MapServer" }),
             terrainProvider: new ArcGISTiledElevationTerrainProvider({
                 url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
@@ -103,11 +97,11 @@ const PPopup = (props: any) => {
         <span></span>
         <span></span>我是测试文本
         </a>`
-        new CesiumPopup(viewer, { position: cartesian5, popPosition: "leftbottom", html: html51,className: "earth-popup-light"}, action)
+        new CesiumPopup(viewer, { position: cartesian5, popPosition: "leftbottom", html: html51, className: "earth-popup-light" }, action)
 
         // 第六个
         const cartesian6 = Cartesian3.fromDegrees(103.77703775549388, 36.09774979703967, 1509.2181406351685)
-        const html61= `<div class="earth-popup-area">
+        const html61 = `<div class="earth-popup-area">
         <div class="earth-popup-area-top"></div>
         <div class="earth-popup-area-bottom"></div>
         <div class="earth-popup-area-right"></div>
@@ -117,7 +111,7 @@ const PPopup = (props: any) => {
         <div class="earth-popup-area-text">我是测试文本</div>
         </div>
         <div class="earth-popup-arrow"></div>`
-        new CesiumPopup(viewer, { position: cartesian6, popPosition: "leftbottom", html: html61,className: "earth-popup-areas"}, action)
+        new CesiumPopup(viewer, { position: cartesian6, popPosition: "leftbottom", html: html61, className: "earth-popup-areas" }, action)
 
 
         //通过点击鼠标绘制，用于获取测试坐标
@@ -143,6 +137,7 @@ const PPopup = (props: any) => {
         // }, ScreenSpaceEventType.LEFT_CLICK)
         return componentWillUnmount
     }, [])
+    
     function componentWillUnmount() {
         CesiumPopupMouseActionUtil.destory()
     }
@@ -157,7 +152,7 @@ const PPopup = (props: any) => {
 
 
     function onAdd2() {
-        const cartesian31 = Cartesian3.fromDegrees(103.8030932443637, 36.03599418009624, 1576.081166069641)
+        // const cartesian31 = Cartesian3.fromDegrees(103.8030932443637, 36.03599418009624, 1576.081166069641)
         const html2 = `<div><div class="earth-popup-common-title">
         通过按钮创建
         </div><div class="earth-popup-common-close-button">×</div></div>

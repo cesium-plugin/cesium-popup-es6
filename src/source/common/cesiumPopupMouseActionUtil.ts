@@ -53,7 +53,7 @@ export class CesiumPopupMouseActionUtil {
     if (!this.viewer) {
       this.viewer = viewer;
       this.positionUtil = new CesiumPopupPositionUtil(viewer)
-      this.addMouseEntityListener();
+      this.addViewerMouseListener();
     }
   }
 
@@ -111,7 +111,7 @@ export class CesiumPopupMouseActionUtil {
     }
   }
 
-  static addMouseEntityListener() {
+  static addViewerMouseListener() {
     const { viewer } = this;
     if (viewer) {
       const eventHandler = new ScreenSpaceEventHandler(viewer.scene.canvas);
@@ -154,7 +154,7 @@ export class CesiumPopupMouseActionUtil {
           this.args.value = this.selectValue
           this.send(this.args)
         } else {
-          //没有实体时
+          //没有popup
           this.args.action = CesiumPopupMouseActions.moving
           this.args.position = cartesian3
           this.clear()

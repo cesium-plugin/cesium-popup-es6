@@ -5,17 +5,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Popup" />
+    <meta name="description" content="CesiumPopup" />
 
     <link href="/Cesium/Widgets/widgets.css" rel="stylesheet">
     <script type="text/javascript" src="/Cesium/Cesium.js"></script>
-    <script type="text/javascript" src="./CesiumEarth/dist/popup.js"></script>
-    <script type="text/javascript" src="./CesiumEarth/dist/postProcessStages.js"></script>
-    <title>Popup</title>
+    <script type="text/javascript" src="./CesiumPopup/dist/CesiumPopup.umd.js"></script>
+    <title>CesiumPopup</title>
 </head>
 
 <body style="margin: 0;">
-    <noscript>Popup</noscript>
+    <noscript>CesiumPopup</noscript>
     <div style="width:100%; height: 100%; position: absolute;overflow: hidden;">
         <div style="width:100%; height: 100%;" id="map">
 
@@ -30,15 +29,15 @@
         </div>
     </div>
     <script>
-        let state
+        let state,viewer
         function onMove(_state) {
             state = _state
         }
-
-        const viewer = new Cesium.Viewer('map', {
+ 
+        viewer = new Cesium.Viewer('map', {
             imageryProvider: new Cesium.ArcGisMapServerImageryProvider({ url: "https://elevation3d.arcgis.com/arcgis/rest/services/World_Imagery/MapServer" }),
-            terrainProvider: new Cesium.CesiumTerrainProvider({
-                url: 'https://www.supermapol.com/realspace/services/3D-stk_terrain/rest/realspace/datas/info/data/path',
+            terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
+                url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
             }),
             infoBox: false,
             selectionIndicator: false,
@@ -63,16 +62,16 @@
         const cartesian3 = Cesium.Cartesian3.fromDegrees(103.75703775549388, 36.08774979703967, 1509.2181406351685)
         const html = `<div class="title">初始化创建</div>
         <div class="content">初始化创建内容</div>`
-        new Popup(viewer, {
-            position: cartesian3, html, className: "earth-earth-popup-imgbg-blue", popPosition: "leftbottom", onMove
+        new CesiumPopup(viewer, {
+            position: cartesian3, html, className: "earth-popup-imgbg-blue", popPosition: "leftbottom", onMove
         })
 
         //第二个
         const cartesian33 = Cesium.Cartesian3.fromDegrees(103.6633339676296, 36.090254266492465, 1522.8186244347767)
         const html3 = `<div class="title">飞机模型</div>
         <div class="content">我在飞机模型上</div>`
-        new Popup(viewer, {
-            position: cartesian33, html: html3, className: "earth-earth-popup-imgbg-blue", popPosition: "leftbottom", onMove
+        new CesiumPopup(viewer, {
+            position: cartesian33, html: html3, className: "earth-popup-imgbg-blue", popPosition: "leftbottom", onMove
         })
 
         //第三个
@@ -85,7 +84,7 @@
            <div>地址：甘肃省甘肃中牧山丹马场</div>
            <div>电话：0936-4455000</div>
         </div>`
-        new Popup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common" })
+        new CesiumPopup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common" })
 
         //通过点击鼠标绘制，用于获取测试坐标
         // const mouseClickHandler = new ScreenSpaceEventHandler(viewer.scene.canvas);
@@ -104,7 +103,7 @@
         //         <div>y:${position.y}</div></div>
         //         </div>`
         //         if (cartesian3) {
-        //             new Popup(viewer, { position: cartesian3, html, className: "earth-earth-popup-imgbg-blue", popPosition: "leftbottom", onMove })
+        //             new CesiumPopup(viewer, { position: cartesian3, html, className: "earth-earth-popup-imgbg-blue", popPosition: "leftbottom", onMove })
         //         }
         //     }
         // }, ScreenSpaceEventType.LEFT_CLICK)
@@ -115,7 +114,7 @@
             const html = `<div class="title">通过鼠标添加</div>
         <div class="content"> <div>我是内容</div>
         </div>`
-            new Popup(viewer, { html, className: "earth-earth-popup-imgbg-blue", popPosition: "leftbottom", getPosition: true, onMove })
+            new CesiumPopup(viewer, { html, className: "earth-popup-imgbg-blue", popPosition: "leftbottom", pickPosition: true, onMove })
         }
 
 
@@ -129,7 +128,7 @@
            <div>地址：甘肃省甘肃中牧山丹马场</div>
            <div>电话：0936-4455000</div>
         </div>`
-            new Popup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common", getPosition: true, onMove })
+            new CesiumPopup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common", pickPosition: true, onMove })
         }
     </script>
 </body>

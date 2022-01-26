@@ -113,7 +113,10 @@ export class CesiumPopup {
                         this.contextmenu?.remove();
                     } else if (action === CesiumPopupMouseActions.moving) {
                         if (this.action?.pickPosition && !this.options?.position) {
+                            
                             //新增 
+                            console.log("add");
+                            
                             this.moving = true
                             if (position) {
                                 this.setPosition(position)
