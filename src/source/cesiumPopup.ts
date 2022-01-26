@@ -1,9 +1,9 @@
 import { Viewer, Cartesian3 } from "cesium"
 import { v1 as uuidv1 } from 'uuid';
-import { CesiumPopupActionMessageArgs, CesiumPopupMouseActions, CesiumPopupMouseActionUtil } from "./common/cesiumPopupMouseActionUtil";
-import { CesiumPopupContextmenuUtil } from "./common/cesiumPopupContextmenuUtil";
-import { Message } from "./common/message";
-import { CesiumPopupPositionUtil } from "./common/cesiumPopupPositionUtil";
+import { CesiumPopupActionMessageArgs, CesiumPopupMouseActions, CesiumPopupMouseActionUtil } from "./cesiumPopupMouseActionUtil";
+import { CesiumPopupContextmenuUtil } from "./";
+import { Message } from "./message";
+import { CesiumPopupPositionUtil } from "./";
 import "./index.css"
 
 export interface CesiumPopupOptions {

@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Viewer } from 'cesium';
 import { useEffect } from 'react';
-import { CesiumPopupMouseActionUtil } from '../source/common/cesiumPopupMouseActionUtil';
+import { CesiumPopupMouseActionUtil } from '../source/';
 import { CesiumPopupAction, CesiumPopup } from "../source/"
 let viewer: Viewer
 

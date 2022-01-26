@@ -1,9 +1,4 @@
 import { Cartesian2, Cartesian3, SceneTransforms, Viewer, Math as CesiumMath } from "cesium";
-export interface EarthPoint {
-    longitude: number
-    latitude: number
-    height?: number
-}
 export class CesiumPopupPositionUtil {
     viewer: Viewer
 
