@@ -1,3 +1,4 @@
+import "./index.css"
 import { Button } from 'antd';
 import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Viewer } from 'cesium';
 import { useEffect } from 'react';
@@ -112,6 +113,12 @@ const PPopup = (props: any) => {
         </div>
         <div class="earth-popup-arrow"></div>`
         new CesiumPopup(viewer, { position: cartesian6, popPosition: "leftbottom", html: html61, className: "earth-popup-areas" }, action)
+
+        const cartesian7 = Cartesian3.fromDegrees(103.77703775549388, 36.01774979703967, 1509.2181406351685)
+        const html62 = `<div>
+        我是自定义的
+       </div>`
+        new CesiumPopup(viewer, {visibleMaxCameraHeight:10000, position: cartesian7, popPosition: "leftbottom", html: html62, className: "self-define" }, action)
 
 
         //通过点击鼠标绘制，用于获取测试坐标

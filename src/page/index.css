@@ -1,0 +1,14 @@
+.self-define {
+    position: absolute;
+    left: 400px;
+    top: 600px;
+    min-width: 100px;
+    max-width: 400px;
+    max-height: 340px;
+    min-height: 80px;
+    padding: 10px;
+    background-color: red;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .3);
+    z-index: 100;
+    display: none;
+}

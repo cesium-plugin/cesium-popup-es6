@@ -1,4 +1,4 @@
-import { Viewer, Cartesian3 } from "cesium"
+import { Viewer, Cartesian3, Event } from "cesium"
 import { v1 as uuidv1 } from 'uuid';
 import { CesiumPopupActionMessageArgs, CesiumPopupMouseActions, CesiumPopupMouseActionUtil } from "./cesiumPopupMouseActionUtil";
 import { CesiumPopupContextmenuUtil } from "./";
@@ -7,6 +7,10 @@ import { CesiumPopupPositionUtil } from "./";
 import "./index.css"
 
 export interface CesiumPopupOptions {
+    /**
+     * 显示弹窗相对于地面相机的最大高度
+     */
+    visibleMaxCameraHeight?: number
     position?: Cartesian3//位置
     html?: string//内容
     className?: "earth-popup-imgbg-green" | "earth-popup-imgbg-blue" | "earth-popup-imgbg-blue-simple" | "earth-popup-common" | "earth-popup-bubble" | string//默认的样式，支持自定义的样式
@@ -20,6 +24,7 @@ export interface CesiumPopupAction {
     remove?: (value?: CesiumPopup) => void//移除
     onChange?: (value?: CesiumPopup) => void//改变时
 }
+
 /**
  * 气泡弹窗
  * onegiser 2022-01-22
@@ -34,6 +39,7 @@ export class CesiumPopup {
     private setValue?: (entity: Element) => void
     private moving = false
     private tooltip?: CesiumPopup
+    private cameraMoveEnd?: Event.RemoveCallback
     constructor(viewer: Viewer, options: CesiumPopupOptions, action?: CesiumPopupAction) {
         this.viewer = viewer
         this.options = options
@@ -52,6 +58,7 @@ export class CesiumPopup {
                 this.createMenu()
             }
         }
+        this.addCameraLisener()
     }
 
     // /**
@@ -112,10 +119,6 @@ export class CesiumPopup {
                         this.contextmenu?.remove();
                     } else if (action === CesiumPopupMouseActions.moving) {
                         if (this.action?.pickPosition && !this.options?.position) {
-
-                            //新增 
-                            console.log("add");
-
                             this.moving = true
                             if (position) {
                                 this.setPosition(position)
@@ -170,6 +173,8 @@ export class CesiumPopup {
                 container.removeChild(this.element)
                 this.element = undefined
             }
+            if (this.cameraMoveEnd)
+                this.viewer.camera.moveEnd.removeEventListener(this.cameraMoveEnd)
         }
         this.contextmenu?.remove()
     }
@@ -219,6 +224,25 @@ export class CesiumPopup {
 
             if (this.options)
                 this.options.position = position
+        }
+    }
+
+    /**
+     * 添加相机的监听
+     */
+    private addCameraLisener() {
+        if (this.options?.visibleMaxCameraHeight) {
+            this.cameraMoveEnd = this.viewer?.camera.moveEnd.addEventListener(() => {
+                const h = this.viewer?.camera.getMagnitude()
+                const min = 6375000
+                if (h && this.options?.visibleMaxCameraHeight && this.element) {
+                    if (h - min > this.options.visibleMaxCameraHeight) {
+                        this.element.style.visibility = "hidden"
+                    } else {
+                        this.element.style.visibility = "visible"
+                    }
+                }
+            })
         }
     }
 
