@@ -3,7 +3,7 @@ import { v1 as uuidv1 } from 'uuid';
 import { CesiumPopupActionMessageArgs, CesiumPopupMouseActions, CesiumPopupMouseActionUtil } from "./common/cesiumPopupMouseActionUtil";
 import { CesiumPopupContextmenuUtil } from "./common/cesiumPopupContextmenuUtil";
 import { Message } from "./common/message";
-import { CesiumPopupPositionUtil } from "./common";
+import { CesiumPopupPositionUtil } from "./common/cesiumPopupPositionUtil";
 import "./index.css"
 
 

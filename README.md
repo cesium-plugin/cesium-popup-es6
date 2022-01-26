@@ -1,7 +1,7 @@
 # 插件使用方法
 
 ## 安装
-`npm install cesium-popup`
+`npm install cesium-popup-es6`
 
 
 ## 文档
@@ -22,7 +22,7 @@
 ## es6模式
 ```javascript
 
-import { CesiumPopupAction, CesiumPopup } from "cesium-popup"
+import { CesiumPopupAction, CesiumPopup } from "cesium-popup-es6"
 const action: CesiumPopupAction = {
     remove: (popup) => {
         console.log(popup, "被移除了");
