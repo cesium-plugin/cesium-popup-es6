@@ -29,11 +29,23 @@
         </div>
     </div>
     <script>
-        let state,viewer
+        let state, viewer
         function onMove(_state) {
             state = _state
         }
- 
+        const action = {
+        remove: (popup) => {
+            console.log(popup, "被移除了");
+
+        },
+        onChange: (popup) => {
+            console.log(popup, "移动完成");
+        },
+        editAttr: (popup) => {
+            console.log(popup, "需要编辑属性！");
+            popup.setContent("我的内容被改变了！")
+        }
+    }
         viewer = new Cesium.Viewer('map', {
             imageryProvider: new Cesium.ArcGisMapServerImageryProvider({ url: "https://elevation3d.arcgis.com/arcgis/rest/services/World_Imagery/MapServer" }),
             terrainProvider: new Cesium.ArcGISTiledElevationTerrainProvider({
@@ -114,12 +126,11 @@
             const html = `<div class="title">通过鼠标添加</div>
         <div class="content"> <div>我是内容</div>
         </div>`
-            new CesiumPopup(viewer, { html, className: "earth-popup-imgbg-blue", popPosition: "leftbottom", pickPosition: true, onMove })
+            new CesiumPopup(viewer, { html, className: "earth-popup-imgbg-blue", popPosition: "leftbottom" }, { ...action, ...{ pickPosition: true } })
         }
 
 
         function onAdd2() {
-            const cartesian31 = Cesium.Cartesian3.fromDegrees(103.8030932443637, 36.03599418009624, 1576.081166069641)
             const html2 = `<div><div class="earth-popup-common-title">
         通过按钮创建
         </div><div class="earth-popup-common-close-button">×</div></div>
@@ -128,7 +139,7 @@
            <div>地址：甘肃省甘肃中牧山丹马场</div>
            <div>电话：0936-4455000</div>
         </div>`
-            new CesiumPopup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common", pickPosition: true, onMove })
+            new CesiumPopup(viewer, { html: html2, className: "earth-popup-common" }, { ...action, ...{ pickPosition: true } })
         }
     </script>
 </body>

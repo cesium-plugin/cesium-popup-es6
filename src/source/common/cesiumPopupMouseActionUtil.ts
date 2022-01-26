@@ -7,7 +7,7 @@ import {
 } from "cesium";
 import { Message, MessageArgs } from "./message";
 import { CesiumPopupPositionUtil } from "./cesiumPopupPositionUtil";
-import { CesiumPopup } from "..";
+import { CesiumPopup } from "../cesiumPopup";
 //鼠标动作
 export enum CesiumPopupMouseActions {
   moving = "moving",
