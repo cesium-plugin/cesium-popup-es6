@@ -1,20 +1,33 @@
-import { Cartesian2, Cartesian3, SceneTransforms, Viewer, Math as CesiumMath } from "cesium";
+import { Cartesian2, Cartesian3, SceneTransforms, Viewer, Math as CesiumMath, defined } from "cesium";
 export class CesiumPopupPositionUtil {
     viewer: Viewer
 
     constructor(viewer: Viewer) {
         this.viewer = viewer
     }
+
+
+    changeMouseStyle(isDefault: boolean) {
+        const v: any = this.viewer
+        v._container.style.cursor = isDefault ? "default" : "crosshair"
+    }
+    
     /**
-         * 屏幕坐标转笛卡尔坐标
-         * @param position 
-         * @returns 
-         */
+             * 屏幕坐标转笛卡尔坐标
+             * @param position 
+             * @returns 
+             */
     cartesian2ToCartesian3(position: Cartesian2) {
         const { viewer } = this
         if (viewer) {
+            // const cartesianLand = viewer.scene.camera.pickEllipsoid(position, viewer.scene.globe.ellipsoid)
             const ray = viewer.camera.getPickRay(position);
-            const cartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
+            const cartesianLand = viewer.scene.globe.pick(ray, viewer.scene);
+            const cartesianModel = viewer.scene.pick(position)
+            let cartesian3 = cartesianLand
+            if (viewer.scene.pickPositionSupported && defined(cartesianModel)) {
+                cartesian3 = viewer.scene.pickPosition(position);
+            }
             return cartesian3
         }
     }
@@ -55,7 +68,7 @@ export class CesiumPopupPositionUtil {
         }
     }
 
-    
+
 
     /**
      * 获取当前的视图范围

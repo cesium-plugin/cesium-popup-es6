@@ -29,8 +29,6 @@ export class CesiumPopupActionMessageArgs extends MessageArgs {
   setTooltip?: (tooltip: CesiumPopup) => void
 }
 
-export type MoveState = "moving" | "selectmoving" | "end";//selectmoving选择实体后移动
-
 //调用方法，需要使用的地方进行注册
 // registerEntitySelect() {
 //   Messenger.default.register(SelectEntityMessageArgs.Message, (message: string, args?: SelectEntityMessageArgs) => {
@@ -98,10 +96,6 @@ export class CesiumPopupMouseActionUtil {
     this.args.value = undefined
   }
 
-  static changeMouseStyle(isDefault: boolean) {
-    const v: any = this.viewer
-    v._container.style.cursor = isDefault ? "default" : "crosshair"
-  }
 
   static showTooltip(position: Cartesian3) {
     if (!this.tooltip) {
@@ -129,7 +123,7 @@ export class CesiumPopupMouseActionUtil {
             this.send(this.args)
 
             this.clear()
-            this.changeMouseStyle(true)
+            this.positionUtil.changeMouseStyle(true)
             this.tooltip?.remove()
             this.tooltip = undefined
           }
@@ -146,7 +140,7 @@ export class CesiumPopupMouseActionUtil {
         const { endPosition } = movement
         const cartesian3 = this.positionUtil.cartesian2ToCartesian3(endPosition);
         if (this.moved && cartesian3) {
-          this.changeMouseStyle(false)
+          this.positionUtil.changeMouseStyle(false)
           this.showTooltip(cartesian3)
           this.args.action = CesiumPopupMouseActions.selectmoving
           this.args.position = cartesian3

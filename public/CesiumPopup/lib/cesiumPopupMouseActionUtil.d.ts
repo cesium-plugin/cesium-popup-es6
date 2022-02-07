@@ -19,7 +19,6 @@ export declare class CesiumPopupActionMessageArgs extends MessageArgs {
     setMoved?: (moved: boolean) => void;
     setTooltip?: (tooltip: CesiumPopup) => void;
 }
-export declare type MoveState = "moving" | "selectmoving" | "end";
 export declare class CesiumPopupMouseActionUtil {
     private static viewer?;
     private static eventHandler?;
@@ -36,7 +35,6 @@ export declare class CesiumPopupMouseActionUtil {
     static removeEventHandler(): void;
     static destory(): void;
     private static clear;
-    static changeMouseStyle(isDefault: boolean): void;
     static showTooltip(position: Cartesian3): void;
     static addViewerMouseListener(): void;
 }

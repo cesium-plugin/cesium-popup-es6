@@ -2,11 +2,12 @@ import { Cartesian2, Cartesian3, Viewer } from "cesium";
 export declare class CesiumPopupPositionUtil {
     viewer: Viewer;
     constructor(viewer: Viewer);
+    changeMouseStyle(isDefault: boolean): void;
     /**
-         * 屏幕坐标转笛卡尔坐标
-         * @param position
-         * @returns
-         */
+             * 屏幕坐标转笛卡尔坐标
+             * @param position
+             * @returns
+             */
     cartesian2ToCartesian3(position: Cartesian2): Cartesian3 | undefined;
     /**
      * 经纬度转笛卡尔坐标
