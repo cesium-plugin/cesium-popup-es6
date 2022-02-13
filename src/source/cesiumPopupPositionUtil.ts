@@ -17,16 +17,19 @@ export class CesiumPopupPositionUtil {
              * @param position 
              * @returns 
              */
-    cartesian2ToCartesian3(position: Cartesian2) {
+     cartesian2ToCartesian3(position: Cartesian2) {
         const { viewer } = this
         if (viewer) {
             // const cartesianLand = viewer.scene.camera.pickEllipsoid(position, viewer.scene.globe.ellipsoid)
             const ray = viewer.camera.getPickRay(position);
             const cartesianLand = viewer.scene.globe.pick(ray, viewer.scene);
             const cartesianModel = viewer.scene.pick(position)
-            let cartesian3 = cartesianLand
+            let cartesian3
             if (viewer.scene.pickPositionSupported && defined(cartesianModel)) {
                 cartesian3 = viewer.scene.pickPosition(position);
+            }
+            if (!cartesian3) {
+                cartesian3 = cartesianLand
             }
             return cartesian3
         }
