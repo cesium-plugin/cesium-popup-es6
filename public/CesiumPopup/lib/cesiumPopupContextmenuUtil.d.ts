@@ -3,7 +3,8 @@ export declare const earthMenuId = "earth-right-menu-id";
 export declare enum CesiumPopupContextmenuActionNames {
     move = "move",
     remove = "remove",
-    editAttr = "editAttr"
+    editAttr = "editAttr",
+    stopMove = "stopMove"
 }
 export interface CesiumPopupContextmenuOption {
     actionNames?: CesiumPopupContextmenuActionNames[];
@@ -12,6 +13,7 @@ export interface CesiumPopupContextmenuOption {
     x?: number;
     y?: number;
     onRemove?: () => void;
+    onStopMove?: () => void;
     onMove?: () => void;
     onEdit?: () => void;
     onClick?: (callback: (show: boolean) => void) => void;
