@@ -8,7 +8,7 @@ export declare class CesiumPopupPositionUtil {
              * @param position
              * @returns
              */
-    cartesian2ToCartesian3(position: Cartesian2): Cartesian3 | undefined;
+    cartesian2ToCartesian3(position: Cartesian2): Cartesian3 | null | undefined;
     /**
      * 经纬度转笛卡尔坐标
      * @param lng

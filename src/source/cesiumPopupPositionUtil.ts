@@ -1,4 +1,4 @@
-import { Cartesian2, Cartesian3, SceneTransforms, Viewer, Math as CesiumMath, defined } from "cesium";
+import { Cartesian2, Cartesian3, SceneTransforms, Viewer, Math as CesiumMath, defined, Cesium3DTileFeature, Cesium3DTileset, Model, Cartographic, EllipsoidTerrainProvider } from "cesium";
 export class CesiumPopupPositionUtil {
     viewer: Viewer
 
@@ -11,28 +11,70 @@ export class CesiumPopupPositionUtil {
         const v: any = this.viewer
         v._container.style.cursor = isDefault ? "default" : "crosshair"
     }
-    
+
     /**
              * 屏幕坐标转笛卡尔坐标
              * @param position 
              * @returns 
              */
-     cartesian2ToCartesian3(position: Cartesian2) {
+    cartesian2ToCartesian3(position: Cartesian2) {
         const { viewer } = this
-        if (viewer) {
+        let cartesian3 = null;
+        if (viewer && position) {
             // const cartesianLand = viewer.scene.camera.pickEllipsoid(position, viewer.scene.globe.ellipsoid)
-            const ray = viewer.camera.getPickRay(position);
-            const cartesianLand = viewer.scene.globe.pick(ray, viewer.scene);
-            const cartesianModel = viewer.scene.pick(position)
-            let cartesian3
-            if (viewer.scene.pickPositionSupported && defined(cartesianModel)) {
-                cartesian3 = viewer.scene.pickPosition(position);
+            // const ray = viewer.camera.getPickRay(position);
+            // const cartesianLand = viewer.scene.globe.pick(ray, viewer.scene);
+            // const cartesianModel = viewer.scene.pick(position)
+            // let cartesian3
+            // if (viewer.scene.pickPositionSupported && defined(cartesianModel) && cartesianModel.tileset) {
+            //     cartesian3 = viewer.scene.pickPosition(position);
+            // }
+            // if (!cartesian3) {
+            //     cartesian3 = cartesianLand
+            // }
+            // return cartesian3
+            const picks = this.viewer.scene.drillPick(position)
+            let isOn3dtiles = false
+            for (let i in picks) {
+                const pick = picks[i]
+                isOn3dtiles = (pick && pick.primitive instanceof Cesium3DTileFeature) || (pick && pick.primitive instanceof Cesium3DTileset) || (pick && pick.primitive instanceof Model)
+                if (isOn3dtiles) {
+                    viewer.scene.pick(position);
+                    cartesian3 = viewer.scene.pickPosition(position);
+                    if (cartesian3) {
+                        const cartographic = Cartographic.fromCartesian(cartesian3);
+                        if (cartographic.height < 0) cartographic.height = 0;
+                        const lon = CesiumMath.toDegrees(cartographic.longitude),
+                            lat = CesiumMath.toDegrees(cartographic.latitude),
+                            height = cartographic.height;
+                        cartesian3 = this.lnglatToCartesian3(lon, lat, height)
+                        return cartesian3
+                    }
+                }
             }
-            if (!cartesian3) {
-                cartesian3 = cartesianLand
+
+            //不在模型上
+            if (!isOn3dtiles) {
+                const isTerrain = viewer.terrainProvider instanceof EllipsoidTerrainProvider;//是否存在地形
+                if (!isTerrain) {
+                    //无地形
+                    const ray = viewer.scene.camera.getPickRay(position);
+                    if (!ray) return null;
+                    cartesian3 = viewer.scene.globe.pick(ray, viewer.scene)
+                    return cartesian3
+                } else {
+                    cartesian3 = viewer.scene.camera.pickEllipsoid(position, viewer.scene.globe.ellipsoid)
+                    if (cartesian3) {
+                        const position = this.cartesian3ToLngLat(cartesian3);
+                        if (position && position.height < 0) {
+                            cartesian3 = this.lnglatToCartesian3(position.longitude, position.latitude, 0.1);
+                        }
+                        return cartesian3;
+                    }
+                }
             }
-            return cartesian3
         }
+        return cartesian3
     }
 
     /**
