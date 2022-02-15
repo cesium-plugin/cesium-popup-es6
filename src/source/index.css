@@ -75,7 +75,7 @@
     height: 157px;
     padding: 10px;
     z-index: 100;
-    animation: mymove 5s infinite;
+    /* animation: mymove 5s infinite;
     animation-duration: 5s;
     animation-timing-function: ease;
     animation-delay: 0s;
@@ -83,7 +83,7 @@
     animation-direction: normal;
     animation-fill-mode: none;
     animation-play-state: running;
-    animation-name: mymove;
+    animation-name: mymove; */
 }
 
 .earth-popup-imgbg-blue .title {
@@ -120,7 +120,7 @@
     height: 157px;
     padding: 10px;
     z-index: 100;
-    animation: mymove 5s infinite;
+    /* animation: mymove 5s infinite;
     animation-duration: 5s;
     animation-timing-function: ease;
     animation-delay: 0s;
@@ -128,7 +128,7 @@
     animation-direction: normal;
     animation-fill-mode: none;
     animation-play-state: running;
-    animation-name: mymove;
+    animation-name: mymove; */
 }
 
 .earth-popup-imgbg-green .title {
@@ -165,15 +165,6 @@
     height: 157px;
     padding: 10px;
     z-index: 100;
-    animation: mymove 5s infinite;
-    animation-duration: 5s;
-    animation-timing-function: ease;
-    animation-delay: 0s;
-    animation-iteration-count: infinite;
-    animation-direction: normal;
-    animation-fill-mode: none;
-    animation-play-state: running;
-    animation-name: mymove;
 }
 
 .earth-popup-imgbg-blue-simple .title {
