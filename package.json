@@ -32,7 +32,7 @@
         "start": "node --max-old-space-size=6000 node_modules/cross-env/src/bin/cross-env.js PORT=5556 craco start",
         "build": "rimraf ./build && cross-env GENERATE_SOURCEMAP=false craco build",
         "ts2js": "tsc ./src/source/index.ts --target es2016",
-        "release": "npm run doc & webpack --config  ./webpack.config.release.js & npm run copyjs",
+        "release": "webpack --config  ./webpack.config.release.js  & npm run doc & npm run copyjs",
         "copyjs": "npm run ts2js & webpack --config  ./webpack.config.copyjs.js",
         "doc": "npx typedoc ./src/source/index.ts"
     },

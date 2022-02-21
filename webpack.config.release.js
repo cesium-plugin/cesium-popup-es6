@@ -7,7 +7,7 @@ const Webpack = require('webpack');
 const rootPath = "./dist";
 
 const p = new CleanWebpackPlugin()
-p.removeFiles(["dist", "lib", "public/CesiumPopup"])
+p.removeFiles(["dist", "lib", "public/CesiumPopup","docs"])
 const plugins = [
     new Webpack.BannerPlugin({
         banner: `${config.name} v${config.version} - [filebase], [hash], ${new Date()}`

@@ -121,9 +121,11 @@ export class CesiumPopupContextmenuUtil {
         obj[CesiumPopupContextmenuActionNames.stopMove] = '<li onclick="earthpopupstopMove()">停止编辑位置</li>'
         let html = ''
         for (let i in actionNames) {
-            const name = actionNames[i]
-            if (name)
-                html += obj[name]
+            if (!isNaN(Number(i))) {
+                const name = actionNames[i]
+                if (name)
+                    html += obj[name]
+            }
         }
         el.innerHTML = html
         if (container) {

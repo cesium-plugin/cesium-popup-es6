@@ -133,7 +133,7 @@ export class CesiumPopupMouseActionUtil {
         const { position } = movement
         this.args.action = CesiumPopupMouseActions.leftClick
         const cartesian3 = this.positionUtil.cartesian2ToCartesian3(position);
-        this.args.position = cartesian3
+        this.args.position = cartesian3 as any
         this.send(this.args)
       }, ScreenSpaceEventType.LEFT_DOWN);
       eventHandler.setInputAction((movement) => {
@@ -150,7 +150,7 @@ export class CesiumPopupMouseActionUtil {
         } else {
           //没有popup
           this.args.action = CesiumPopupMouseActions.moving
-          this.args.position = cartesian3
+          this.args.position = cartesian3 as any
           this.clear()
           this.send(this.args)
         }

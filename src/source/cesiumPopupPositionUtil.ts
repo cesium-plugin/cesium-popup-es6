@@ -1,4 +1,4 @@
-import { Cartesian2, Cartesian3, SceneTransforms, Viewer, Math as CesiumMath, defined, Cesium3DTileFeature, Cesium3DTileset, Model, Cartographic, EllipsoidTerrainProvider } from "cesium";
+import { Cartesian2, Cartesian3, SceneTransforms, Viewer, Math as CesiumMath, Cesium3DTileFeature, Cesium3DTileset, Model, Cartographic, EllipsoidTerrainProvider } from "cesium";
 export class CesiumPopupPositionUtil {
     viewer: Viewer
 
@@ -36,19 +36,22 @@ export class CesiumPopupPositionUtil {
             const picks = this.viewer.scene.drillPick(position)
             let isOn3dtiles = false
             for (let i in picks) {
-                const pick = picks[i]
-                isOn3dtiles = (pick && pick.primitive instanceof Cesium3DTileFeature) || (pick && pick.primitive instanceof Cesium3DTileset) || (pick && pick.primitive instanceof Model)
-                if (isOn3dtiles) {
-                    viewer.scene.pick(position);
-                    cartesian3 = viewer.scene.pickPosition(position);
-                    if (cartesian3) {
-                        const cartographic = Cartographic.fromCartesian(cartesian3);
-                        if (cartographic.height < 0) cartographic.height = 0;
-                        const lon = CesiumMath.toDegrees(cartographic.longitude),
-                            lat = CesiumMath.toDegrees(cartographic.latitude),
-                            height = cartographic.height;
-                        cartesian3 = this.lnglatToCartesian3(lon, lat, height)
-                        return cartesian3
+                //为了防止别人用了Array.prototype扩展后出现bug 
+                if (!isNaN(Number(i))) {
+                    const pick = picks[i]
+                    isOn3dtiles = (pick && pick.primitive instanceof Cesium3DTileFeature) || (pick && pick.primitive instanceof Cesium3DTileset) || (pick && pick.primitive instanceof Model)
+                    if (isOn3dtiles) {
+                        viewer.scene.pick(position);
+                        cartesian3 = viewer.scene.pickPosition(position);
+                        if (cartesian3) {
+                            const cartographic = Cartographic.fromCartesian(cartesian3);
+                            if (cartographic.height < 0) cartographic.height = 0;
+                            const lon = CesiumMath.toDegrees(cartographic.longitude),
+                                lat = CesiumMath.toDegrees(cartographic.latitude),
+                                height = cartographic.height;
+                            cartesian3 = this.lnglatToCartesian3(lon, lat, height)
+                            return cartesian3
+                        }
                     }
                 }
             }
