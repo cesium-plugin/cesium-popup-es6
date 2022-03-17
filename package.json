@@ -6,7 +6,7 @@
     "version": "0.15.0",
     "private": false,
     "dependencies": {
-        "cesium": "^1.89.0",
+        "cesium": "^1.91.0",
         "uuid": "^8.3.2"
     },
     "files": [

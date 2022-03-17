@@ -1,6 +1,6 @@
 import "./index.css"
 import { Button } from 'antd';
-import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Viewer } from 'cesium';
+import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Cartographic, Cesium3DTileset, Matrix4, Viewer } from 'cesium';
 import { useEffect } from 'react';
 import { CesiumPopupMouseActionUtil } from '../source/';
 import { CesiumPopupAction, CesiumPopup } from "../source/"
@@ -36,14 +36,41 @@ const PPopup = (props: any) => {
         viewer.camera.flyTo({
             destination: Cartesian3.fromDegrees(103.742546, 36.06, 30000),
         })
-        // viewer.scene.globe.depthTestAgainstTerrain = true;
+        viewer.scene.globe.depthTestAgainstTerrain = true;
         viewer.entities.add({
-            position: Cartesian3.fromDegrees(103.67149, 36.09057, 1000),
+            position: Cartesian3.fromDegrees(103.67149, 36.09057, 1800),
             model: {
                 uri: "/datas/model/Cesium_Air.glb",
                 scale: 500,
             },
         })
+
+
+        const _3DTileset = new Cesium3DTileset({
+            url: 'https://earthsdk.com/v/last/Apps/assets/dayanta/tileset.json'
+        })
+
+        _3DTileset.readyPromise.then(function (argument) {
+            viewer.scene.primitives.add(_3DTileset)
+            viewer.zoomTo(_3DTileset)
+            //大雁塔移到兰州
+            const height = 1600;
+            const cartographic = Cartographic.fromCartesian(
+                _3DTileset.boundingSphere.center
+            );
+            const surface = Cartesian3.fromRadians(
+                cartographic.longitude,
+                cartographic.latitude,
+                cartographic.height
+            );
+            const offset = Cartesian3.fromDegrees(103.709, 36.1107, height);
+            const translation = Cartesian3.subtract(
+                offset,
+                surface,
+                new Cartesian3()
+            );
+            _3DTileset.modelMatrix = Matrix4.fromTranslation(translation);
+        });
 
         //第一个
         const cartesian3 = Cartesian3.fromDegrees(103.75703775549388, 36.08774979703967, 1509.2181406351685)
@@ -118,7 +145,7 @@ const PPopup = (props: any) => {
         const html62 = `<div>
         我是自定义的
        </div>`
-        new CesiumPopup(viewer, {visibleMaxCameraHeight:10000, position: cartesian7, popPosition: "leftbottom", html: html62, className: "self-define" }, action)
+        new CesiumPopup(viewer, { visibleMaxCameraHeight: 10000, position: cartesian7, popPosition: "leftbottom", html: html62, className: "self-define" }, action)
 
 
         //通过点击鼠标绘制，用于获取测试坐标
@@ -144,7 +171,7 @@ const PPopup = (props: any) => {
         // }, ScreenSpaceEventType.LEFT_CLICK)
         return componentWillUnmount
     }, [])
-    
+
     function componentWillUnmount() {
         CesiumPopupMouseActionUtil.destory()
     }
