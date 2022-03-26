@@ -1,8 +1,7 @@
 import "./index.css"
 import { Button } from 'antd';
-import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Cartographic, Cesium3DTileset, Matrix4, Viewer } from 'cesium';
+import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Cartographic, Cesium3DTileset, CesiumTerrainProvider, Matrix4, Viewer } from 'cesium';
 import { useEffect } from 'react';
-import { CesiumPopupMouseActionUtil } from '../source/';
 import { CesiumPopupAction, CesiumPopup } from "../source/"
 let viewer: Viewer
 
@@ -11,6 +10,9 @@ const PPopup = (props: any) => {
         remove: (popup) => {
             console.log(popup, "被移除了");
 
+        },
+        onClick: (popup) => {
+            console.log(popup, "被点击了");
         },
         onChange: (popup) => {
             console.log(popup, "移动完成");
@@ -24,8 +26,11 @@ const PPopup = (props: any) => {
     useEffect(() => {
         viewer = new Viewer('map', {
             imageryProvider: new ArcGisMapServerImageryProvider({ url: "https://elevation3d.arcgis.com/arcgis/rest/services/World_Imagery/MapServer" }),
-            terrainProvider: new ArcGISTiledElevationTerrainProvider({
-                url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+            // terrainProvider: new ArcGISTiledElevationTerrainProvider({
+            //     url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
+            // }),
+            terrainProvider: new CesiumTerrainProvider({
+                url: 'https://data.marsgis.cn/terrain',
             }),
             infoBox: false,
             selectionIndicator: false,
@@ -33,6 +38,8 @@ const PPopup = (props: any) => {
             timeline: false,
             baseLayerPicker: false
         })
+        console.log(viewer);
+
         viewer.camera.flyTo({
             destination: Cartesian3.fromDegrees(103.742546, 36.06, 30000),
         })
@@ -173,7 +180,7 @@ const PPopup = (props: any) => {
     }, [])
 
     function componentWillUnmount() {
-        CesiumPopupMouseActionUtil.destory()
+       
     }
 
     //点击按钮绘制

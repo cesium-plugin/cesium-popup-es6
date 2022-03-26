@@ -16,7 +16,7 @@ export interface CesiumPopupContextmenuOption {
     onStopMove?: () => void
     onMove?: () => void
     onEdit?: () => void
-    onClick?: (callback: (show: boolean) => void) => void
+    onRClick?: (callback: (show: boolean) => void) => void
 }
 export class CesiumPopupContextmenuUtil {
     private option: CesiumPopupContextmenuOption
@@ -60,8 +60,8 @@ export class CesiumPopupContextmenuUtil {
                 e.preventDefault();
                 const { clientX, clientY } = e
                 const menu = self.setPosition(clientX - self.option.container.getBoundingClientRect().left, clientY - self.option.container.getBoundingClientRect().top)
-                if (self.option?.onClick && menu) {
-                    self.option.onClick((show: boolean) => {
+                if (self.option?.onRClick && menu) {
+                    self.option.onRClick((show: boolean) => {
                         if (!show) {
                             menu.style.display = 'none'
                         } else {
@@ -117,7 +117,7 @@ export class CesiumPopupContextmenuUtil {
         }
         obj[CesiumPopupContextmenuActionNames.move] = '<li onclick="earthpopupmove()">编辑位置</li>'
         obj[CesiumPopupContextmenuActionNames.remove] = `<li onclick="earthpopupremove()">删除</li>`
-        obj[CesiumPopupContextmenuActionNames.editAttr] = '<li onclick="earthpopupedit()">编辑属性</li>'
+        obj[CesiumPopupContextmenuActionNames.editAttr] = '<li onclick="earthpopupedit()">编辑样式</li>'
         obj[CesiumPopupContextmenuActionNames.stopMove] = '<li onclick="earthpopupstopMove()">停止编辑位置</li>'
         let html = ''
         for (let i in actionNames) {

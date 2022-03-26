@@ -1,8 +1,6 @@
-import { Viewer, Cartesian3, Event } from "cesium"
+import { Viewer, Cartesian3, Event, ScreenSpaceEventHandler, ScreenSpaceEventType } from "cesium"
 import { v1 as uuidv1 } from 'uuid';
-import { CesiumPopupActionMessageArgs, CesiumPopupMouseActions, CesiumPopupMouseActionUtil } from "./cesiumPopupMouseActionUtil";
 import { CesiumPopupContextmenuUtil } from "./";
-import { Message } from "./message";
 import { CesiumPopupPositionUtil } from "./";
 import "./index.css"
 
@@ -23,6 +21,7 @@ export interface CesiumPopupAction {
     editAttr?: (value?: CesiumPopup) => void//编辑属性
     remove?: (value?: CesiumPopup) => void//移除
     onChange?: (value?: CesiumPopup) => void//改变时
+    onClick?: (value?: CesiumPopup) => void//改变时
 }
 
 /**
@@ -35,119 +34,149 @@ export class CesiumPopup {
     options?: CesiumPopupOptions
     private contextmenu?: CesiumPopupContextmenuUtil
     private action?: CesiumPopupAction
-    private setMoved?: (moved: boolean) => void
-    private setValue?: (entity: Element) => void
     private moving = false
     private tooltip?: CesiumPopup
     private cameraMoveEnd?: Event.RemoveCallback
+    private eventHandler?: ScreenSpaceEventHandler
+    private moved: boolean = false; //鼠标开始移动 
+    private positionUtil: CesiumPopupPositionUtil
+    private selectValue?: Element
+    private actionState?: "draw" | "edit"
+
     constructor(viewer: Viewer, options: CesiumPopupOptions, action?: CesiumPopupAction) {
         this.viewer = viewer
+        this.positionUtil = new CesiumPopupPositionUtil(viewer)
         this.options = options
         this.action = action
-        this.init()
-    }
-
-    private init() {
         this.addPopup()
         if (!this.action?.noLisener) {
             this.addMapListener()
-            if (this.viewer)
-                CesiumPopupMouseActionUtil.register(this.viewer)
-            this.registerMouseAction()
+            this.eventHandler = new ScreenSpaceEventHandler(viewer.scene.canvas);
             if (!this.action?.contextDisabled) {
                 this.createMenu()
             }
+            let self = this
+            this.element?.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (!self.moved) {
+                    if (self.action?.onClick) {
+                        self.action.onClick(self)
+                    }
+                }
+            }, false);
         }
         this.addCameraLisener()
+        if (this.action?.pickPosition) {
+            this.actionState = "draw"
+            this.addMouseLisener()
+        }
     }
 
-    // /**
-    //  * 添加提示的实体
-    //  * @param position 
-    //  */
-    // private addEntity(position: Cartesian3) {
-    //     const { viewer } = this
-    //     if (viewer && position) {
-    //         this.entity = viewer.entities.add({
-    //             position: position,
-    //             label: {
-    //                 style: LabelStyle.FILL,
-    //                 text: "移动鼠标开始\n按下右键结束",//\n按住左键拖动地图\n滚动中键缩放地图
-    //                 fillColor: Color.YELLOW,
-    //                 font: "10px",
-    //                 pixelOffset: new Cartesian2(80, 20),
-    //                 eyeOffset: new Cartesian3(0, 0, 10)
-    //             }
-    //         })
-    //     }
-    // }
+    private addMouseLisener() {
+        this.addMouseRightDownLisener()
+        this.addMouseMoveLisener()
+    }
 
-    private registerMouseAction() {
-        Message.default.register(CesiumPopupActionMessageArgs.Message, (message: string, args?: CesiumPopupActionMessageArgs) => {
-            if (args) {
-                const { action, value, position, setMoved, setValue, setTooltip } = args
-                this.setMoved = setMoved
-                this.setValue = setValue
-                if (this.element?.id === value?.id) {
-                    if (action === CesiumPopupMouseActions.moveEnd) {
-                        if (position) {
-                            this.setPosition(position)
-                            if (this.action?.onChange) {
-                                this.action.onChange(this)
-                            }
-                            this.tooltip = undefined
-                        }
-                        this.moving = false
-                    } else if (action === CesiumPopupMouseActions.selectmoving) {
+    private addMouseRightDownLisener() {
+        this.eventHandler?.setInputAction((movement) => {
+            if (this.actionState === "edit") {
+                if (this.element?.id !== this.selectValue?.id) {
+                    return
+                }
+            }
+            const { position } = movement;
+            if (this.moved) {
+                const cartesian3 = this.positionUtil.cartesian2ToCartesian3(position);
+                this.positionUtil.changeMouseStyle(true)
+                if (cartesian3) {
+                    this.setPosition(cartesian3)
+                    if (this.action?.onChange) {
+                        this.action.onChange(this)
+                    }
+                    this.tooltip?.remove()
+                    this.tooltip = undefined
+                    this.removeMouseLisener()
+                }
+                this.moved = false;
+                this.moving = false
+                this.actionState = undefined
+            }
+        }, ScreenSpaceEventType.RIGHT_DOWN);
+    }
+
+    private addMouseLeftDownListener() {
+        this.eventHandler?.setInputAction((movement) => {
+            this.contextmenu?.remove();
+            this.removeMouseLeftDownLisener()
+        }, ScreenSpaceEventType.LEFT_DOWN);
+    }
+
+    private showTooltip(position: Cartesian3) {
+        if (this.viewer) {
+            if (!this.tooltip) {
+                const html4 = `<div>按下鼠标右键结束</div>`
+                if (!this.tooltip) {
+                    this.tooltip = new CesiumPopup(this.viewer, { position, popPosition: "leftmiddle", html: html4, className: "earth-popup-bubble", }, { noLisener: true, contextDisabled: true })//一丁不能添加监听
+                }
+            } else {
+                this.tooltip.setPosition(position)
+            }
+        }
+    }
+
+
+    private addMouseMoveLisener() {
+        this.eventHandler?.setInputAction((movement) => {
+            const { endPosition } = movement
+            const cartesians3 = this.positionUtil.cartesian2ToCartesian3(endPosition);
+            if (this.actionState === "edit") {
+                if (this.element?.id === this.selectValue?.id) {
+                    if (this.moved && cartesians3) {
+                        this.positionUtil.changeMouseStyle(false)
+                        this.showTooltip(cartesians3)
                         this.moving = true
                         this.contextmenu?.remove()
-                        if (position)
-                            this.setPosition(position)
-                        if (setTooltip && this.viewer) {
-                            //解决组件 Cannot access 'CesiumPopupMouseActions' before initialization的问题
-                            const html4 = `<div>
-                            按下鼠标右键结束
-                            </div>`
-                            if (!this.tooltip) {
-                                this.tooltip = new CesiumPopup(this.viewer, { position, popPosition: "leftmiddle", html: html4, className: "earth-popup-bubble", }, { noLisener: true, contextDisabled: true })//一丁不能添加监听
-                                setTooltip(this.tooltip)
-                            }
-                        }
-                    }
-                } else {
-                    if (action === CesiumPopupMouseActions.leftClick) {
-                        this.contextmenu?.remove();
-                    } else if (action === CesiumPopupMouseActions.moving) {
-                        if (this.action?.pickPosition && !this.options?.position) {
-                            this.moving = true
-                            if (position) {
-                                this.setPosition(position)
-                                if (this.element)
-                                    if (setValue)
-                                        setValue(this.element as Element)
-                                if (setMoved)
-                                    setMoved(true)
-                            }
+                        if (cartesians3)
+                            this.setPosition(cartesians3)
+                        if (this.viewer) {
+                            this.showTooltip(cartesians3)
                         }
                     }
                 }
+            } else {
+                this.moving = true
+                if (cartesians3) {
+                    this.setPosition(cartesians3)
+                    this.moved = true
+                    this.showTooltip(cartesians3)
+                }
             }
-        })
+        }, ScreenSpaceEventType.MOUSE_MOVE);
+    }
+
+    private removeMouseLisener() {
+        this.eventHandler?.removeInputAction(ScreenSpaceEventType.MOUSE_MOVE)
+        this.eventHandler?.removeInputAction(ScreenSpaceEventType.RIGHT_DOWN)
+        this.removeMouseLeftDownLisener()
+    }
+
+    private removeMouseLeftDownLisener() {
+        this.eventHandler?.removeInputAction(ScreenSpaceEventType.LEFT_DOWN)
     }
 
     private createMenu() {
         if (this.element && !this.moving)
             this.contextmenu = new CesiumPopupContextmenuUtil({
                 container: this.element as HTMLElement,
-                onClick: (callback) => {
+                onRClick: (callback) => {
+                    this.addMouseLeftDownListener()
                     callback(!this.moving)
                 },
                 onMove: () => {
-                    if (this.setMoved)
-                        this.setMoved(true)
-                    if (this.setValue) {
-                        this.setValue(this.element as Element)
-                    }
+                    this.moved = true
+                    this.actionState = "edit"
+                    this.selectValue = this.element as Element
+                    this.addMouseLisener()
                 },
                 onRemove: () => {
                     if (this.action?.remove) {
@@ -175,6 +204,7 @@ export class CesiumPopup {
             }
             if (this.cameraMoveEnd)
                 this.viewer.camera.moveEnd.removeEventListener(this.cameraMoveEnd)
+            this.eventHandler?.destroy()
         }
         this.contextmenu?.remove()
     }
@@ -183,7 +213,7 @@ export class CesiumPopup {
      * 设置弹窗的内容
      * @param html 内容
      */
-    setContent(html: string) {
+    setContent(html: string, init?: boolean) {
         const { element } = this
         if (element) {
             element.innerHTML = html
@@ -191,7 +221,7 @@ export class CesiumPopup {
         if (this.options) {
             this.options.html = html
         }
-        if (this.action?.onChange) {
+        if (!init && this.action?.onChange) {
             this.action.onChange(this)
         }
     }
@@ -272,7 +302,7 @@ export class CesiumPopup {
                     this.setPosition(this.options.position)
                 }
                 if (options.html !== undefined)
-                    this.setContent(options.html)
+                    this.setContent(options.html, true)
             }
         }
     }
