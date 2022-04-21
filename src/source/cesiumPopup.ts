@@ -42,6 +42,7 @@ export class CesiumPopup {
     private positionUtil: CesiumPopupPositionUtil
     private selectValue?: Element
     private actionState?: "draw" | "edit"
+    private lastScreenPostion?: any
 
     constructor(viewer: Viewer, options: CesiumPopupOptions, action?: CesiumPopupAction) {
         this.viewer = viewer
@@ -234,8 +235,15 @@ export class CesiumPopup {
         if (this.viewer && position) {
             const screenPosition = new CesiumPopupPositionUtil(this.viewer).cartesian3ToCartesian2(position)
             const { element } = this
+
             if (element && screenPosition) {
-                element.style.display = "block"
+                if (this.lastScreenPostion) {
+                    if (this.lastScreenPostion.x === screenPosition.x && this.lastScreenPostion.y === screenPosition.y) {
+                        return
+                    }
+                }
+
+
                 let x = screenPosition.x - element.clientWidth / 2
                 let y = screenPosition.y - element.clientHeight - 15
                 if (this.options?.popPosition) {
@@ -248,8 +256,11 @@ export class CesiumPopup {
                     }
                 }
 
+                element.style.display = "block"
                 element.style.left = `${x}px`
                 element.style.top = `${y}px`
+
+                this.lastScreenPostion = { ...screenPosition }
             }
 
             if (this.options)
