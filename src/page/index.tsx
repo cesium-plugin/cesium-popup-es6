@@ -210,7 +210,7 @@ const PPopup = (props: any) => {
     }
 
     return <div style={{ width: "100%", height: "100%", position: "relative" }} >
-        <div style={{ width: "100%", height: "100%" }} id="map">
+        <div style={{ width: "100%", height: "100%",overflow:"hidden",position:"relative" }} id="map">
 
         </div>
         <div style={{ position: "absolute", top: 0, left: 0, zIndex: 5000 }}>
