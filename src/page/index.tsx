@@ -99,13 +99,17 @@ const PPopup = (props: any) => {
         const cartesian31 = Cartesian3.fromDegrees(103.8030932443637, 36.03599418009624, 1576.081166069641)
         const html2 = `<div><div class="earth-popup-common-title">
         我是标题
-        </div><div class="earth-popup-common-close-button">×</div></div>
+        </div><div class="earth-popup-common-close-button" onclick="remove()">×</div></div>
         <div class="earth-popup-common-content">
         <div>
            <div>地址：甘肃省甘肃中牧山丹马场</div>
            <div>电话：0936-4455000</div>
         </div>`
-        new CesiumPopup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common" }, action)
+        const popup = new CesiumPopup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common" }, action)
+        const _window: any = window
+        _window.remove = () => {
+            popup.remove()
+        }
 
 
         //第四个
@@ -180,7 +184,7 @@ const PPopup = (props: any) => {
     }, [])
 
     function componentWillUnmount() {
-       
+
     }
 
     //点击按钮绘制
