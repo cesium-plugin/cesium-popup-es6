@@ -180,10 +180,7 @@ export class CesiumPopup {
                     this.addMouseLisener()
                 },
                 onRemove: () => {
-                    if (this.action?.remove) {
-                        this.action.remove(this)
-                        this.remove()
-                    }
+                    this.remove()
                 },
                 onEdit: () => {
                     if (this.action?.editAttr) {
@@ -208,6 +205,9 @@ export class CesiumPopup {
             this.eventHandler?.destroy()
         }
         this.contextmenu?.remove()
+        if (this.action?.remove) {
+            this.action.remove(this)
+        }
     }
 
     /**
