@@ -14,12 +14,14 @@ export interface CesiumPopupOptions {
     className?: "earth-popup-imgbg-green" | "earth-popup-imgbg-blue" | "earth-popup-imgbg-blue-simple" | "earth-popup-common" | "earth-popup-bubble" | string//默认的样式，支持自定义的样式
     popPosition?: "leftbottom" | "bottom" | "leftmiddle"//弹出的位置
 }
+
+export type CesiumPopupRemoveType = "handler" | "method"
 export interface CesiumPopupAction {
     pickPosition?: boolean//初次添加,获取位置
     contextDisabled?: boolean//右键不可用
     noLisener?: boolean//不需要添加监听
     editAttr?: (value?: CesiumPopup) => void//编辑属性
-    remove?: (value?: CesiumPopup) => void//移除
+    remove?: (value?: CesiumPopup, type?: CesiumPopupRemoveType /**移除的类型 */) => void//移除
     onChange?: (value?: CesiumPopup) => void//改变时
     onClick?: (value?: CesiumPopup) => void//改变时
 }
@@ -180,7 +182,7 @@ export class CesiumPopup {
                     this.addMouseLisener()
                 },
                 onRemove: () => {
-                    this.remove()
+                    this.removeExt("handler")
                 },
                 onEdit: () => {
                     if (this.action?.editAttr) {
@@ -190,10 +192,8 @@ export class CesiumPopup {
             });
     }
 
-    /**
-     * 移除弹窗
-     */
-    remove() {
+
+    private removeExt(type?: CesiumPopupRemoveType) {
         if (this.viewer) {
             const { container } = this.viewer
             if (this.element) {
@@ -206,8 +206,15 @@ export class CesiumPopup {
         }
         this.contextmenu?.remove()
         if (this.action?.remove) {
-            this.action.remove(this)
+            this.action.remove(this, type)
         }
+    }
+
+    /**
+     * 移除弹窗
+     */
+    remove() {
+        this.removeExt("method")
     }
 
     /**
