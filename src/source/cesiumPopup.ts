@@ -13,6 +13,8 @@ export interface CesiumPopupOptions {
     html?: string//内容
     className?: "earth-popup-imgbg-green" | "earth-popup-imgbg-blue" | "earth-popup-imgbg-blue-simple" | "earth-popup-common" | "earth-popup-bubble" | string//默认的样式，支持自定义的样式
     popPosition?: "leftbottom" | "bottom" | "leftmiddle"//弹出的位置
+    /**移除抓手的样式类名 */
+    // removeHandlerClassName?: string
 }
 
 export type CesiumPopupRemoveType = "handler" | "method"
@@ -182,7 +184,7 @@ export class CesiumPopup {
                     this.addMouseLisener()
                 },
                 onRemove: () => {
-                    this.removeExt("handler")
+                    this.removeCommon("handler")
                 },
                 onEdit: () => {
                     if (this.action?.editAttr) {
@@ -193,7 +195,7 @@ export class CesiumPopup {
     }
 
 
-    private removeExt(type?: CesiumPopupRemoveType) {
+    private removeCommon(type?: CesiumPopupRemoveType) {
         if (this.viewer) {
             const { container } = this.viewer
             if (this.element) {
@@ -214,7 +216,14 @@ export class CesiumPopup {
      * 移除弹窗
      */
     remove() {
-        this.removeExt("method")
+        this.removeCommon("method")
+    }
+
+    /**
+    * 通过抓手移除弹窗
+    */
+    removeByHandler() {
+        this.removeCommon("handler")
     }
 
     /**
