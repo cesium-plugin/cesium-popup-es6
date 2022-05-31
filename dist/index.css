@@ -1,0 +1,453 @@
+.earth-popup-common {
+    position: absolute;
+    left: 400px;
+    top: 600px;
+    min-width: 200px;
+    max-width: 400px;
+    max-height: 340px;
+    min-height: 80px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .3);
+    z-index: 100;
+    display: none;
+}
+
+.earth-popup-common:after {
+    display: inline-block;
+    position: absolute;
+    bottom: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-top: 8px solid #fff;
+    content: "";
+}
+
+.earth-popup-common-close-button {
+    font-size: 24px;
+    position: absolute;
+    background: #fff;
+    padding: 0 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+    z-index: 101;
+    transition: color .3s;
+    top: 0;
+    right: 0;
+    border-radius: 2px;
+    width: 30px;
+    height: 30px;
+    color: #5d5d5d;
+    background-color: transparent;
+    border: 0;
+}
+
+.earth-popup-common-close-button:hover {
+    color: #1890ff;
+}
+
+.earth-popup-common-title {
+    padding: 0 0 4px;
+    font-size: 16px;
+    color: #565656;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.earth-popup-common-content {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    padding-top: 10px;
+}
+
+
+/*蓝色图片背景*/
+
+.earth-popup-imgbg-blue {
+    position: absolute;
+    background-size: 100%;
+    background-image: url("./img/blue.png");
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 157px;
+    padding: 10px;
+    z-index: 100;
+}
+
+.earth-popup-imgbg-blue .title {
+    position: inherit;
+    top: 22px;
+    left: 70px;
+    font-size: 14px;
+    text-align: left;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0px 0px 9px rgb(0 0 0 / 75%);
+}
+
+.earth-popup-imgbg-blue .content {
+    position: inherit;
+    font-size: 14px;
+    top: 50px;
+    left: 50px;
+    width: 140px;
+    height: auto;
+    text-align: left;
+    color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+}
+
+
+/*绿色图片背景*/
+
+.earth-popup-imgbg-green {
+    position: absolute;
+    background-size: 100%;
+    background-image: url("./img/green.png");
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 157px;
+    padding: 10px;
+    z-index: 100;
+}
+
+.earth-popup-imgbg-green .title {
+    position: inherit;
+    top: 18px;
+    left: 70px;
+    font-size: 14px;
+    text-align: left;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0px 0px 9px rgb(0 0 0 / 75%);
+}
+
+.earth-popup-imgbg-green .content {
+    position: inherit;
+    font-size: 14px;
+    top: 50px;
+    left: 50px;
+    width: 140px;
+    height: auto;
+    text-align: left;
+    color: rgba(255, 255, 255, 1);
+    overflow: hidden;
+}
+
+
+/*蓝色简单图片背景*/
+
+.earth-popup-imgbg-blue-simple {
+    position: absolute;
+    background-size: 100%;
+    background-image: url("./img/blue-simple.png");
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 157px;
+    padding: 10px;
+    z-index: 100;
+}
+
+.earth-popup-imgbg-blue-simple .title {
+    position: inherit;
+    top: 20px;
+    left: 70px;
+    font-size: 14px;
+    text-align: left;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0px 0px 9px rgb(0 0 0 / 75%);
+}
+
+
+/*气泡*/
+
+.earth-popup-bubble {
+    min-width: 100px;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px 10px;
+    /*边框*/
+    border-radius: 5px;
+    background-color: #252524;
+    /*背景*/
+    position: absolute;
+    color: #fff;
+}
+
+.earth-popup-bubble::after {
+    content: "";
+    position: absolute;
+    top: 35%;
+    left: -9px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    /* border-left: 12px solid #fefcc9; */
+    border-right: 11px solid #252524;
+    border-bottom: 10px solid transparent;
+    transform: skew(0deg, 0);
+}
+
+
+/* 流光效果 */
+
+.earth-popup-light {
+    width: 100px;
+    height: 30px;
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    z-index: 100;
+    line-height: 30px;
+}
+
+.earth-popup-flow {
+    position: absolute;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: 0.5s;
+    color: #03f2ff;
+    overflow: hidden;
+}
+
+.earth-popup-flow span:nth-child(5) {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #03f2ff);
+    animation: animate1 1s linear infinite;
+}
+
+.earth-popup-flow:hover {
+    background: #03f2ff;
+    color: rgb(255, 255, 255);
+    box-shadow: 0 0 5px #03f2ff, 0 0 25px #03f2ff, 0 0 50px #03f2ff, 0 0 200px #03f2ff;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #000);
+}
+
+.earth-popup-flow:nth-child(1):hover {
+    width: 100px;
+}
+
+.earth-popup-flow:nth-child(2) {
+    filter: hue-rotate(110deg);
+}
+
+.earth-popup-flow:nth-child(3) {
+    background: rgba(15, 53, 76, 0.8);
+    color: white;
+    font-size: 12px;
+}
+
+
+/* 流光效果 */
+
+.earth-popup-flow span {
+    position: absolute;
+    display: block;
+}
+
+
+/* 从左到右 */
+
+.earth-popup-flow span:nth-child(1) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #03f2ff);
+    animation: animate1 1s linear infinite;
+}
+
+@keyframes animate1 {
+    0% {
+        left: -100%;
+    }
+    50%,
+    100% {
+        left: 100%;
+    }
+}
+
+
+/* 从上到下 */
+
+.earth-popup-flow span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03f2ff);
+    animation: animate2 1s linear infinite;
+    animation-delay: 0.25s;
+}
+
+@keyframes animate2 {
+    0% {
+        top: -100%;
+    }
+    50%,
+    100% {
+        top: 100%;
+    }
+}
+
+
+/* 从右到左 */
+
+.earth-popup-flow span:nth-child(3) {
+    right: -100%;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(270deg, transparent, #03f2ff);
+    animation: animate3 1s linear infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes animate3 {
+    0% {
+        right: -100%;
+    }
+    50%,
+    100% {
+        right: 100%;
+    }
+}
+
+
+/* 从下到上 */
+
+.earth-popup-flow span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03f2ff);
+    animation: animate4 1s linear infinite;
+    animation-delay: 0.75s;
+}
+
+@keyframes animate4 {
+    0% {
+        bottom: -100%;
+    }
+    50%,
+    100% {
+        bottom: 100%;
+    }
+}
+
+
+/* 绘制的广告牌 */
+
+.earth-popup-areas {
+    position: absolute;
+    width: 180px;
+    height: 160px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.earth-popup-area {
+    position: absolute;
+    right: 0px;
+    width: 80%;
+    height: 60%;
+    background-image: linear-gradient( 135deg, transparent 15px, #28bbf06c 15px, #28bbf06c 50%, transparent 50%), linear-gradient( -45deg, transparent 15px, #28bbf06c 15px, #28bbf06c 50.01%, transparent 50%);
+}
+
+.earth-popup-area-text {
+    position: absolute;
+    right: 5%;
+    top: 30%;
+}
+
+.earth-popup-area-top {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 0;
+    height: 1px;
+    z-index: 10;
+    background-color: #29baf1;
+    box-shadow: 0 0 10px 2px #29baf1;
+}
+
+.earth-popup-area-bottom {
+    position: absolute;
+    left: 0;
+    right: 15%;
+    bottom: 0;
+    height: 1px;
+    z-index: 10;
+    background-color: #29baf1;
+    box-shadow: 0 0 10px 2px #29baf1;
+}
+
+.earth-popup-area-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 22%;
+    width: 1px;
+    z-index: 10;
+    background-color: #29baf1;
+    box-shadow: 0 0 10px 2px #29baf1;
+}
+
+.earth-popup-area-left {
+    position: absolute;
+    top: 22%;
+    left: 0;
+    bottom: 0;
+    width: 1px;
+    z-index: 10;
+    background-color: #29baf1;
+    box-shadow: 0 0 10px 2px #29baf1;
+}
+
+.earth-popup-area-top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 31%;
+    transform: rotate( 45deg) translate(5px, -11px);
+    z-index: 10;
+    background-color: #29baf1;
+    box-shadow: 0 0 10px 2px #29baf1;
+}
+
+.earth-popup-area-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 31%;
+    transform: rotate( 45deg) translate(-5px, 11px);
+    z-index: 10;
+    background-color: #29baf1;
+    box-shadow: 0 0 10px 2px #29baf1;
+}
+
+.earth-popup-arrow {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 32%;
+    transform: rotate( 45deg) translate(-129px, 98px);
+    z-index: 10;
+    background-color: #29baf1;
+    box-shadow: 0 0 10px 2px #29baf1;
+}

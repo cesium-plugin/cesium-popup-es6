@@ -40,9 +40,9 @@ const PPopup = (props: any) => {
         })
         console.log(viewer);
 
-        viewer.camera.flyTo({
-            destination: Cartesian3.fromDegrees(103.742546, 36.06, 30000),
-        })
+        // viewer.camera.flyTo({
+        //     destination: Cartesian3.fromDegrees(103.742546, 36.06, 30000),
+        // })
         viewer.scene.globe.depthTestAgainstTerrain = true;
         viewer.entities.add({
             position: Cartesian3.fromDegrees(103.67149, 36.09057, 1800),
@@ -87,76 +87,76 @@ const PPopup = (props: any) => {
             position: cartesian3, html, className: "earth-popup-imgbg-blue", popPosition: "leftbottom"
         }, { contextDisabled: true })
 
-    //     //第二个
-    //     const cartesian33 = Cartesian3.fromDegrees(103.6633339676296, 36.090254266492465, 1522.8186244347767)
-    //     const html3 = `<div class="title">飞机模型</div>
-    //     <div class="content">我在飞机模型上</div>`
-    //     new CesiumPopup(viewer, {
-    //         position: cartesian33, html: html3, className: "earth-popup-imgbg-blue", popPosition: "leftbottom"
-    //     }, action)
+        //第二个
+        const cartesian33 = Cartesian3.fromDegrees(103.6633339676296, 36.090254266492465, 1522.8186244347767)
+        const html3 = `<div class="title">飞机模型</div>
+        <div class="content">我在飞机模型上</div>`
+        new CesiumPopup(viewer, {
+            position: cartesian33, html: html3, className: "earth-popup-imgbg-blue", popPosition: "leftbottom"
+        }, action)
 
-    //     //第三个
-    //     const cartesian31 = Cartesian3.fromDegrees(103.8030932443637, 36.03599418009624, 1576.081166069641)
-    //     const html2 = `<div><div class="earth-popup-common-title">
-    //     我是标题
-    //     </div><div class="earth-popup-common-close-button" onclick="remove()">×</div></div>
-    //     <div class="earth-popup-common-content">
-    //     <div>
-    //        <div>地址：甘肃省甘肃中牧山丹马场</div>
-    //        <div>电话：0936-4455000</div>
-    //     </div>`
-    //     const popup = new CesiumPopup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common" }, action)
-    //     const _window: any = window
-    //     _window.remove = () => {
-    //         popup.remove()
-    //     }
-
-
-    //     //第四个
-    //     const cartesian34 = Cartesian3.fromDegrees(103.8030932443637, 36.01599418009624, 1576.081166069641)
-    //     const html4 = `<div>
-    //      我是测试文本
-    //      </div>`
-    //     new CesiumPopup(viewer, { position: cartesian34, popPosition: "leftmiddle", html: html4, className: "earth-popup-bubble" }, action)
-
-    //     const cartesian35 = Cartesian3.fromDegrees(103.8230932443637, 36.02599418009624, 1576.081166069641)
-    //     const html5 = `<div class="title">我是标题</div>
-    //     <div class="content">内容</div>`
-    //     new CesiumPopup(viewer, { position: cartesian35, popPosition: "leftbottom", html: html5, className: "earth-popup-imgbg-green" }, action)
+        //第三个
+        const cartesian31 = Cartesian3.fromDegrees(103.8030932443637, 36.03599418009624, 1576.081166069641)
+        const html2 = `<div><div class="earth-popup-common-title">
+        我是标题
+        </div><div class="earth-popup-common-close-button" onclick="remove()">×</div></div>
+        <div class="earth-popup-common-content">
+        <div>
+           <div>地址：甘肃省甘肃中牧山丹马场</div>
+           <div>电话：0936-4455000</div>
+        </div>`
+        const popup = new CesiumPopup(viewer, { position: cartesian31, html: html2, className: "earth-popup-common" }, action)
+        const _window: any = window
+        _window.remove = () => {
+            popup.remove()
+        }
 
 
-    //     const cartesian36 = Cartesian3.fromDegrees(103.8230932443637, 36.05599418009624, 1576.081166069641)
-    //     const html6 = `<div class="title">我是内容</div>`
-    //     new CesiumPopup(viewer, { position: cartesian36, popPosition: "leftbottom", html: html6, className: "earth-popup-imgbg-blue-simple" }, action)
+        //第四个
+        const cartesian34 = Cartesian3.fromDegrees(103.8030932443637, 36.01599418009624, 1576.081166069641)
+        const html4 = `<div>
+         我是测试文本
+         </div>`
+        new CesiumPopup(viewer, { position: cartesian34, popPosition: "leftmiddle", html: html4, className: "earth-popup-bubble" }, action)
 
-    //     // 第五个
-    //     const cartesian5 = Cartesian3.fromDegrees(103.74703775549388, 36.09774979703967, 1509.2181406351685)
-    //     const html51 = `<a class="earth-popup-flow"><span></span>
-    //     <span></span>
-    //     <span></span>
-    //     <span></span>我是测试文本
-    //     </a>`
-    //     new CesiumPopup(viewer, { position: cartesian5, popPosition: "leftbottom", html: html51, className: "earth-popup-light" }, action)
+        const cartesian35 = Cartesian3.fromDegrees(103.8230932443637, 36.02599418009624, 1576.081166069641)
+        const html5 = `<div class="title">我是标题</div>
+        <div class="content">内容</div>`
+        new CesiumPopup(viewer, { position: cartesian35, popPosition: "leftbottom", html: html5, className: "earth-popup-imgbg-green" }, action)
 
-    //     // 第六个
-    //     const cartesian6 = Cartesian3.fromDegrees(103.77703775549388, 36.09774979703967, 1509.2181406351685)
-    //     const html61 = `<div class="earth-popup-area">
-    //     <div class="earth-popup-area-top"></div>
-    //     <div class="earth-popup-area-bottom"></div>
-    //     <div class="earth-popup-area-right"></div>
-    //     <div class="earth-popup-area-left"></div>
-    //     <div class="earth-popup-area-top-left"></div>
-    //     <div class="earth-popup-area-bottom-right"></div>
-    //     <div class="earth-popup-area-text">我是测试文本</div>
-    //     </div>
-    //     <div class="earth-popup-arrow"></div>`
-    //     new CesiumPopup(viewer, { position: cartesian6, popPosition: "leftbottom", html: html61, className: "earth-popup-areas" }, action)
 
-    //     const cartesian7 = Cartesian3.fromDegrees(103.77703775549388, 36.01774979703967, 1509.2181406351685)
-    //     const html62 = `<div>
-    //     我是自定义的
-    //    </div>`
-    //     new CesiumPopup(viewer, { visibleMaxCameraHeight: 10000, position: cartesian7, popPosition: "leftbottom", html: html62, className: "self-define" }, action)
+        const cartesian36 = Cartesian3.fromDegrees(103.8230932443637, 36.05599418009624, 1576.081166069641)
+        const html6 = `<div class="title">我是内容</div>`
+        new CesiumPopup(viewer, { position: cartesian36, popPosition: "leftbottom", html: html6, className: "earth-popup-imgbg-blue-simple" }, action)
+
+        // 第五个
+        const cartesian5 = Cartesian3.fromDegrees(103.74703775549388, 36.09774979703967, 1509.2181406351685)
+        const html51 = `<a class="earth-popup-flow"><span></span>
+        <span></span>
+        <span></span>
+        <span></span>我是测试文本
+        </a>`
+        new CesiumPopup(viewer, { position: cartesian5, popPosition: "leftbottom", html: html51, className: "earth-popup-light" }, action)
+
+        // 第六个
+        const cartesian6 = Cartesian3.fromDegrees(103.77703775549388, 36.09774979703967, 1509.2181406351685)
+        const html61 = `<div class="earth-popup-area">
+        <div class="earth-popup-area-top"></div>
+        <div class="earth-popup-area-bottom"></div>
+        <div class="earth-popup-area-right"></div>
+        <div class="earth-popup-area-left"></div>
+        <div class="earth-popup-area-top-left"></div>
+        <div class="earth-popup-area-bottom-right"></div>
+        <div class="earth-popup-area-text">我是测试文本</div>
+        </div>
+        <div class="earth-popup-arrow"></div>`
+        new CesiumPopup(viewer, { position: cartesian6, popPosition: "leftbottom", html: html61, className: "earth-popup-areas" }, action)
+
+        const cartesian7 = Cartesian3.fromDegrees(103.77703775549388, 36.01774979703967, 1509.2181406351685)
+        const html62 = `<div>
+        我是自定义的
+       </div>`
+        new CesiumPopup(viewer, { visibleMaxCameraHeight: 10000, position: cartesian7, popPosition: "leftbottom", html: html62, className: "self-define" }, action)
 
 
         //通过点击鼠标绘制，用于获取测试坐标

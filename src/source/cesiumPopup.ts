@@ -15,6 +15,8 @@ export interface CesiumPopupOptions {
     popPosition?: "leftbottom" | "bottom" | "leftmiddle"//弹出的位置
     /**移除抓手的样式类名 */
     // removeHandlerClassName?: string
+    /**仅在视图范围渲染 */
+    renderInViewBounds?: boolean
 }
 
 export type CesiumPopupRemoveType = "handler" | "method"
@@ -321,13 +323,19 @@ export class CesiumPopup {
         this.viewer?.scene.postRender.addEventListener(() => {
             const position = this.options?.position
             if (position) {
-                if (this.positionUtil.isVisibleByBounds(position)) {
+                if (this.options?.renderInViewBounds) {
+                    if (this.positionUtil.isVisibleByBounds(position)) {
+                        if (!this.moving) {
+                            this.setPosition(position)
+                        }
+                        this.show()
+                    } else {
+                        this.hide()
+                    }
+                } else {
                     if (!this.moving) {
                         this.setPosition(position)
                     }
-                    this.show()
-                } else {
-                    this.hide()
                 }
             }
         })
