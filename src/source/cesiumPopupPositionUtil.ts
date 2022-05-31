@@ -152,4 +152,20 @@ export class CesiumPopupPositionUtil {
         return bounds
     }
 
+    // 判断点的可见性
+    isVisibleByBounds(position: Cartesian3) {
+        let visible = false
+        const bounds = this.computeViewerBounds()
+        if (bounds) {
+            const lnglat = this.cartesian3ToLngLat(position)
+            if (lnglat) {
+                const lng = lnglat.longitude
+                const lat = lnglat.latitude
+                if (lng >= bounds[0] && lng <= bounds[2] && lat >= bounds[1] && lat <= bounds[3]) {
+                    visible = true
+                }
+            }
+        }
+        return visible
+    }
 }

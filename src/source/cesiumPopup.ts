@@ -294,13 +294,24 @@ export class CesiumPopup {
                 const min = 6375000
                 if (h && this.options?.visibleMaxCameraHeight && this.element) {
                     if (h - min > this.options.visibleMaxCameraHeight) {
-                        this.element.style.visibility = "hidden"
+                        this.hide()
                     } else {
-                        this.element.style.visibility = "visible"
+                        this.show()
                     }
                 }
             })
         }
+    }
+
+    hide() {
+        if (this.element)
+            this.element.style.visibility = "hidden"
+    }
+
+
+    show() {
+        if (this.element)
+            this.element.style.visibility = "visible"
     }
 
     /**
@@ -308,8 +319,16 @@ export class CesiumPopup {
      */
     private addMapListener() {
         this.viewer?.scene.postRender.addEventListener(() => {
-            if (!this.moving && this.options?.position) {
-                this.setPosition(this.options.position)
+            const position = this.options?.position
+            if (position) {
+                if (this.positionUtil.isVisibleByBounds(position)) {
+                    if (!this.moving) {
+                        this.setPosition(position)
+                    }
+                    this.show()
+                } else {
+                    this.hide()
+                }
             }
         })
     }
