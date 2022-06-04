@@ -1,6 +1,6 @@
 import "./index.css"
 import { Button } from 'antd';
-import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Cartographic, Cesium3DTileset, CesiumTerrainProvider, Matrix4, Viewer } from 'cesium';
+import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Cartographic, Cesium3DTileset, CesiumTerrainProvider, ClassificationType, Color, Entity, HeightReference, Matrix4, PolygonHierarchy, Viewer } from 'cesium';
 import { useEffect } from 'react';
 import { CesiumPopupAction, CesiumPopup } from "../source/"
 let viewer: Viewer
@@ -78,6 +78,19 @@ const PPopup = (props: any) => {
             );
             _3DTileset.modelMatrix = Matrix4.fromTranslation(translation);
         });
+
+        const points=Cartesian3.fromDegreesArray([103.6,36.0,103.6,36.2,103.8,36.2,103.8,36.0])
+
+        const entity = {
+            polygon: {
+                hierarchy: new PolygonHierarchy(points),
+                heightReference: HeightReference.CLAMP_TO_GROUND,
+                material: Color.RED.withAlpha(0.5),
+                classificationType: ClassificationType.CESIUM_3D_TILE,
+            },
+        }
+
+        viewer.entities.add(entity)
 
         //第一个
         const cartesian3 = Cartesian3.fromDegrees(103.75703775549388, 36.08774979703967, 1509.2181406351685)
