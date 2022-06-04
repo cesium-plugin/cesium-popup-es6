@@ -41,7 +41,6 @@ export declare class CesiumPopup {
     private positionUtil;
     private selectValue?;
     private actionState?;
-    private lastScreenPostion?;
     constructor(viewer: Viewer, options: CesiumPopupOptions, action?: CesiumPopupAction);
     private addMouseLisener;
     private addMouseRightDownLisener;

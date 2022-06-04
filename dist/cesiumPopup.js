@@ -212,14 +212,9 @@ export class CesiumPopup {
     setPosition(position) {
         var _a, _b, _c;
         if (this.viewer && position) {
-            const screenPosition = new CesiumPopupPositionUtil(this.viewer).cartesian3ToCartesian2(position);
+            const screenPosition = this.positionUtil.cartesian3ToCartesian2(position);
             const { element } = this;
             if (element && screenPosition) {
-                if (this.lastScreenPostion) {
-                    if (this.lastScreenPostion.x === screenPosition.x && this.lastScreenPostion.y === screenPosition.y) {
-                        return;
-                    }
-                }
                 let x = screenPosition.x - element.clientWidth / 2;
                 let y = screenPosition.y - element.clientHeight - 15;
                 if ((_a = this.options) === null || _a === void 0 ? void 0 : _a.popPosition) {
@@ -235,7 +230,6 @@ export class CesiumPopup {
                 element.style.display = "block";
                 element.style.left = `${x}px`;
                 element.style.top = `${y}px`;
-                this.lastScreenPostion = Object.assign({}, screenPosition);
             }
             if (this.options)
                 this.options.position = position;
