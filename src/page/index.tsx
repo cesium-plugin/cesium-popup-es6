@@ -190,33 +190,33 @@ const PPopup = (props: any) => {
 
 
         //通过点击鼠标绘制，用于获取测试坐标
-        const mouseClickHandler = new ScreenSpaceEventHandler(viewer.scene.canvas);
-        mouseClickHandler.setInputAction((e) => {
-            const { position } = e
-            const ray = viewer.camera.getPickRay(position);
-            const cartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
-            const radians = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian3);
-            const lat = CesiumMath.toDegrees(radians.latitude); //弧度转度
-            const lng = CesiumMath.toDegrees(radians.longitude);
-            const alt = radians.height;
-            console.log(`${lng},${lat},${alt}`);
+        // const mouseClickHandler = new ScreenSpaceEventHandler(viewer.scene.canvas);
+        // mouseClickHandler.setInputAction((e) => {
+        //     const { position } = e
+        //     const ray = viewer.camera.getPickRay(position);
+        //     const cartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
+        //     const radians = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian3);
+        //     const lat = CesiumMath.toDegrees(radians.latitude); //弧度转度
+        //     const lng = CesiumMath.toDegrees(radians.longitude);
+        //     const alt = radians.height;
+        //     console.log(`${lng},${lat},${alt}`);
 
-            const _entity = {
-                position: cartesian3,
-                point: new PointGraphics({ color: Color.RED, pixelSize: 30 }),
+        //     const _entity = {
+        //         position: cartesian3,
+        //         point: new PointGraphics({ color: Color.RED, pixelSize: 30 }),
     
-            }
+        //     }
     
-            viewer.entities.add(_entity)
+        //     viewer.entities.add(_entity)
 
-            const html = `<div class="title">获取位置</div>
-                <div class="content"> <div>x:${position.x}</div>
-                <div>y:${position.y}</div></div>
-                </div>`
-            if (cartesian3) {
-                new CesiumPopup(viewer, { position: cartesian3, html,  className: "earth-popup-common"  })//className: "earth-popup-imgbg-blue", popPosition: "leftbottom"
-            }
-        }, ScreenSpaceEventType.LEFT_CLICK)
+        //     const html = `<div class="title">获取位置</div>
+        //         <div class="content"> <div>x:${position.x}</div>
+        //         <div>y:${position.y}</div></div>
+        //         </div>`
+        //     if (cartesian3) {
+        //         new CesiumPopup(viewer, { position: cartesian3, html,  className: "earth-popup-common"  })//className: "earth-popup-imgbg-blue", popPosition: "leftbottom"
+        //     }
+        // }, ScreenSpaceEventType.LEFT_CLICK)
         return componentWillUnmount
     }, [])
 
