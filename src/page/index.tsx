@@ -1,6 +1,6 @@
 import "./index.css"
 import { Button } from 'antd';
-import { ArcGisMapServerImageryProvider, ArcGISTiledElevationTerrainProvider, Cartesian3, Cartographic, Cesium3DTileset, CesiumTerrainProvider, ClassificationType, Color, Entity, HeightReference, Matrix4, PolygonHierarchy, Viewer } from 'cesium';
+import { ArcGisMapServerImageryProvider, Math as CesiumMath, Cartesian3, Cartographic, Cesium3DTileset, CesiumTerrainProvider, ClassificationType, Color, Entity, HeightReference, Matrix4, PointGraphics, PolygonHierarchy, ScreenSpaceEventHandler, ScreenSpaceEventType, Viewer, UrlTemplateImageryProvider } from 'cesium';
 import { useEffect } from 'react';
 import { CesiumPopupAction, CesiumPopup } from "../source/"
 let viewer: Viewer
@@ -25,10 +25,16 @@ const PPopup = (props: any) => {
 
     useEffect(() => {
         viewer = new Viewer('map', {
-            imageryProvider: new ArcGisMapServerImageryProvider({ url: "https://elevation3d.arcgis.com/arcgis/rest/services/World_Imagery/MapServer" }),
+            // imageryProvider: new ArcGisMapServerImageryProvider({ url: "https://elevation3d.arcgis.com/arcgis/rest/services/World_Imagery/MapServer" }),
             // terrainProvider: new ArcGISTiledElevationTerrainProvider({
             //     url: 'https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer'
             // }),
+            // imageryProvider: new UrlTemplateImageryProvider({
+            //     url: "https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA",
+            // }),
+            imageryProvider: new UrlTemplateImageryProvider({
+                url:"http://mt1.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}&s=Gali"
+            }),
             terrainProvider: new CesiumTerrainProvider({
                 url: 'https://data.marsgis.cn/terrain',
             }),
@@ -79,7 +85,7 @@ const PPopup = (props: any) => {
             _3DTileset.modelMatrix = Matrix4.fromTranslation(translation);
         });
 
-        const points=Cartesian3.fromDegreesArray([103.6,36.0,103.6,36.2,103.8,36.2,103.8,36.0])
+        const points = Cartesian3.fromDegreesArray([103.6, 36.0, 103.6, 36.2, 103.8, 36.2, 103.8, 36.0])
 
         const entity = {
             polygon: {
@@ -99,6 +105,8 @@ const PPopup = (props: any) => {
         new CesiumPopup(viewer, {
             position: cartesian3, html, className: "earth-popup-imgbg-blue", popPosition: "leftbottom"
         }, { contextDisabled: true })
+
+       
 
         //第二个
         const cartesian33 = Cartesian3.fromDegrees(103.6633339676296, 36.090254266492465, 1522.8186244347767)
@@ -123,6 +131,15 @@ const PPopup = (props: any) => {
         _window.remove = () => {
             popup.remove()
         }
+
+
+        const _entity31 = {
+            position: cartesian31,
+            point: new PointGraphics({ color: Color.RED, pixelSize: 30 }),
+
+        }
+
+        viewer.entities.add(_entity31)
 
 
         //第四个
@@ -173,26 +190,33 @@ const PPopup = (props: any) => {
 
 
         //通过点击鼠标绘制，用于获取测试坐标
-        // const mouseClickHandler = new ScreenSpaceEventHandler(viewer.scene.canvas);
-        // mouseClickHandler.setInputAction((e) => {
-        //     if (state !== "moving") {
-        //         const { position } = e
-        //         const ray = viewer.camera.getPickRay(position);
-        //         const cartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
-        //         const radians = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian3);
-        //         const lat = CesiumMath.toDegrees(radians.latitude); //弧度转度
-        //         const lng = CesiumMath.toDegrees(radians.longitude);
-        //         const alt = radians.height;
-        //         console.log(`${lng},${lat},${alt}`);
-        //         const html = `<div class="title">获取位置</div>
-        //         <div class="content"> <div>x:${position.x}</div>
-        //         <div>y:${position.y}</div></div>
-        //         </div>`
-        //         if (cartesian3) {
-        //             new Popup(viewer, { position: cartesian3, html, className: "earth-popup-imgbg-blue", popPosition: "leftbottom", onMove })
-        //         }
-        //     }
-        // }, ScreenSpaceEventType.LEFT_CLICK)
+        const mouseClickHandler = new ScreenSpaceEventHandler(viewer.scene.canvas);
+        mouseClickHandler.setInputAction((e) => {
+            const { position } = e
+            const ray = viewer.camera.getPickRay(position);
+            const cartesian3 = viewer.scene.globe.pick(ray, viewer.scene);
+            const radians = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian3);
+            const lat = CesiumMath.toDegrees(radians.latitude); //弧度转度
+            const lng = CesiumMath.toDegrees(radians.longitude);
+            const alt = radians.height;
+            console.log(`${lng},${lat},${alt}`);
+
+            const _entity = {
+                position: cartesian3,
+                point: new PointGraphics({ color: Color.RED, pixelSize: 30 }),
+    
+            }
+    
+            viewer.entities.add(_entity)
+
+            const html = `<div class="title">获取位置</div>
+                <div class="content"> <div>x:${position.x}</div>
+                <div>y:${position.y}</div></div>
+                </div>`
+            if (cartesian3) {
+                new CesiumPopup(viewer, { position: cartesian3, html,  className: "earth-popup-common"  })//className: "earth-popup-imgbg-blue", popPosition: "leftbottom"
+            }
+        }, ScreenSpaceEventType.LEFT_CLICK)
         return componentWillUnmount
     }, [])
 
@@ -223,7 +247,7 @@ const PPopup = (props: any) => {
     }
 
     return <div style={{ width: "100%", height: "100%", position: "relative" }} >
-        <div style={{ width: "100%", height: "100%",overflow:"hidden",position:"relative" }} id="map">
+        <div style={{ width: "100%", height: "100%", overflow: "hidden", position: "relative" }} id="map">
 
         </div>
         <div style={{ position: "absolute", top: 0, left: 0, zIndex: 5000 }}>
