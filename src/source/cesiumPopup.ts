@@ -5,6 +5,7 @@ import { CesiumPopupPositionUtil } from "./";
 import "./index.css"
 
 export interface CesiumPopupOptions {
+    id?: string
     /**
      * 显示弹窗相对于地面相机的最大高度
      */
@@ -53,6 +54,7 @@ export class CesiumPopup {
         this.viewer = viewer
         this.positionUtil = new CesiumPopupPositionUtil(viewer)
         this.options = options
+        this.options.id = (options?.id) ? options.id : uuidv1()
         this.action = action
         this.addPopup()
         if (!this.action?.noLisener) {
@@ -337,16 +339,18 @@ export class CesiumPopup {
     private addPopup() {
         if (this.viewer && this.options) {
             const { options } = this
-            const id = uuidv1()
-            if (document.getElementById(id)) {
-                throw new Error(`id为${id}的div已存在！`)
-            } else {
-                this.element = this.createPopupDom(id)
-                if (this.options?.position) {
-                    this.setPosition(this.options.position)
+            const id = options.id
+            if (id) {
+                if (document.getElementById(id)) {
+                    throw new Error(`id为${id}的div已存在！`)
+                } else {
+                    this.element = this.createPopupDom(id)
+                    if (this.options?.position) {
+                        this.setPosition(this.options.position)
+                    }
+                    if (options.html !== undefined)
+                        this.setContent(options.html, true)
                 }
-                if (options.html !== undefined)
-                    this.setContent(options.html, true)
             }
         }
     }
