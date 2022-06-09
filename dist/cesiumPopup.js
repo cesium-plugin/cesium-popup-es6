@@ -15,6 +15,7 @@ export class CesiumPopup {
         this.viewer = viewer;
         this.positionUtil = new CesiumPopupPositionUtil(viewer);
         this.options = options;
+        this.options.id = (options === null || options === void 0 ? void 0 : options.id) ? options.id : uuidv1();
         this.action = action;
         this.addPopup();
         if (!((_a = this.action) === null || _a === void 0 ? void 0 : _a.noLisener)) {
@@ -299,17 +300,19 @@ export class CesiumPopup {
         var _a;
         if (this.viewer && this.options) {
             const { options } = this;
-            const id = uuidv1();
-            if (document.getElementById(id)) {
-                throw new Error(`id为${id}的div已存在！`);
-            }
-            else {
-                this.element = this.createPopupDom(id);
-                if ((_a = this.options) === null || _a === void 0 ? void 0 : _a.position) {
-                    this.setPosition(this.options.position);
+            const id = options.id;
+            if (id) {
+                if (document.getElementById(id)) {
+                    throw new Error(`id为${id}的div已存在！`);
                 }
-                if (options.html !== undefined)
-                    this.setContent(options.html, true);
+                else {
+                    this.element = this.createPopupDom(id);
+                    if ((_a = this.options) === null || _a === void 0 ? void 0 : _a.position) {
+                        this.setPosition(this.options.position);
+                    }
+                    if (options.html !== undefined)
+                        this.setContent(options.html, true);
+                }
             }
         }
     }

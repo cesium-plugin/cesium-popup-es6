@@ -1,6 +1,7 @@
 import { Viewer, Cartesian3 } from "cesium";
 import "./index.css";
 export interface CesiumPopupOptions {
+    id?: string;
     /**
      * 显示弹窗相对于地面相机的最大高度
      */
