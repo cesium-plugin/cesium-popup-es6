@@ -19,6 +19,9 @@ export interface CesiumPopupContextmenuOption {
     onMove?: () => void;
     onEdit?: () => void;
     onRClick?: (callback: (show: boolean) => void) => void;
+    menuObj?: {
+        [key: string]: string;
+    };
 }
 export declare class CesiumPopupContextmenuUtil {
     private option;
