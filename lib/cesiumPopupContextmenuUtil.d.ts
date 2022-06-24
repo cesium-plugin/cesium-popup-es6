@@ -4,7 +4,8 @@ export declare enum CesiumPopupContextmenuActionNames {
     move = "move",
     remove = "remove",
     editAttr = "editAttr",
-    stopMove = "stopMove"
+    stopMove = "stopMove",
+    height = "height"
 }
 export interface CesiumPopupContextmenuOption {
     actionNames?: CesiumPopupContextmenuActionNames[];
@@ -14,6 +15,7 @@ export interface CesiumPopupContextmenuOption {
     y?: number;
     onRemove?: () => void;
     onStopMove?: () => void;
+    onChangeHeight?: () => void;
     onMove?: () => void;
     onEdit?: () => void;
     onRClick?: (callback: (show: boolean) => void) => void;

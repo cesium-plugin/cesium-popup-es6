@@ -4,7 +4,8 @@ export enum CesiumPopupContextmenuActionNames {
     move = "move",
     remove = "remove",
     editAttr = "editAttr",
-    stopMove = "stopMove"
+    stopMove = "stopMove",
+    height = "height"
 }
 export interface CesiumPopupContextmenuOption {
     actionNames?: CesiumPopupContextmenuActionNames[]//要显示的已实现的右键
@@ -14,9 +15,11 @@ export interface CesiumPopupContextmenuOption {
     y?: number//初始化的坐标位置
     onRemove?: () => void
     onStopMove?: () => void
+    onChangeHeight?: () => void
     onMove?: () => void
     onEdit?: () => void
     onRClick?: (callback: (show: boolean) => void) => void
+    menuObj?: { [key: string]: string }//如obj: any = {        test:'<li onclick="earthpopupmove()">编辑位置</li>'    }
 }
 export class CesiumPopupContextmenuUtil {
     private option: CesiumPopupContextmenuOption
@@ -111,15 +114,17 @@ export class CesiumPopupContextmenuUtil {
             if (self.option?.onStopMove)
                 self.option.onStopMove()
         }
+
         const actionNames = this.option.actionNames ? this.option.actionNames : [CesiumPopupContextmenuActionNames.move, CesiumPopupContextmenuActionNames.editAttr, CesiumPopupContextmenuActionNames.remove,]
         const obj: any = {
-
+            test: '<li onclick="earthpopupmove()">编辑位置</li>'
         }
         obj[CesiumPopupContextmenuActionNames.move] = '<li onclick="earthpopupmove()">编辑位置</li>'
         obj[CesiumPopupContextmenuActionNames.remove] = `<li onclick="earthpopupremove()">删除</li>`
         obj[CesiumPopupContextmenuActionNames.editAttr] = '<li onclick="earthpopupedit()">编辑样式</li>'
         obj[CesiumPopupContextmenuActionNames.stopMove] = '<li onclick="earthpopupstopMove()">停止编辑位置</li>'
         let html = ''
+
         for (let i in actionNames) {
             if (!isNaN(Number(i))) {
                 const name = actionNames[i]
@@ -127,6 +132,14 @@ export class CesiumPopupContextmenuUtil {
                     html += obj[name]
             }
         }
+
+        const { menuObj } = this.option
+        if (menuObj) {
+            for (let i in menuObj) {
+                html += menuObj[i]
+            }
+        }
+
         el.innerHTML = html
         if (container) {
             container.appendChild(el)
