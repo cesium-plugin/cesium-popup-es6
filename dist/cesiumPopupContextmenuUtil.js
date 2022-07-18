@@ -102,10 +102,9 @@ export class CesiumPopupContextmenuUtil {
             if ((_a = self.option) === null || _a === void 0 ? void 0 : _a.onStopMove)
                 self.option.onStopMove();
         };
+        const { menuObj } = this.option;
         const actionNames = this.option.actionNames ? this.option.actionNames : [CesiumPopupContextmenuActionNames.move, CesiumPopupContextmenuActionNames.editAttr, CesiumPopupContextmenuActionNames.remove,];
-        const obj = {
-            test: '<li onclick="earthpopupmove()">编辑位置</li>'
-        };
+        const obj = menuObj ? menuObj : {};
         obj[CesiumPopupContextmenuActionNames.move] = '<li onclick="earthpopupmove()">编辑位置</li>';
         obj[CesiumPopupContextmenuActionNames.remove] = `<li onclick="earthpopupremove()">删除</li>`;
         obj[CesiumPopupContextmenuActionNames.editAttr] = '<li onclick="earthpopupedit()">编辑样式</li>';
@@ -118,7 +117,6 @@ export class CesiumPopupContextmenuUtil {
                     html += obj[name];
             }
         }
-        const { menuObj } = this.option;
         if (menuObj) {
             for (let i in menuObj) {
                 html += menuObj[i];
