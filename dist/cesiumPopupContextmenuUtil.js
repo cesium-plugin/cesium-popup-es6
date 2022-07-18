@@ -117,11 +117,6 @@ export class CesiumPopupContextmenuUtil {
                     html += obj[name];
             }
         }
-        if (menuObj) {
-            for (let i in menuObj) {
-                html += menuObj[i];
-            }
-        }
         el.innerHTML = html;
         if (container) {
             container.appendChild(el);
