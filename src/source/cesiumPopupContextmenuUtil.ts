@@ -115,9 +115,9 @@ export class CesiumPopupContextmenuUtil {
                 self.option.onStopMove()
         }
 
+        const { menuObj } = this.option
         const actionNames = this.option.actionNames ? this.option.actionNames : [CesiumPopupContextmenuActionNames.move, CesiumPopupContextmenuActionNames.editAttr, CesiumPopupContextmenuActionNames.remove,]
-        const obj: any = {
-            test: '<li onclick="earthpopupmove()">编辑位置</li>'
+        const obj: any = menuObj ? menuObj : {
         }
         obj[CesiumPopupContextmenuActionNames.move] = '<li onclick="earthpopupmove()">编辑位置</li>'
         obj[CesiumPopupContextmenuActionNames.remove] = `<li onclick="earthpopupremove()">删除</li>`
@@ -133,7 +133,6 @@ export class CesiumPopupContextmenuUtil {
             }
         }
 
-        const { menuObj } = this.option
         if (menuObj) {
             for (let i in menuObj) {
                 html += menuObj[i]
